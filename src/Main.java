@@ -1,51 +1,48 @@
 import Esame.Esame;
 import Segreteria_Command.*;
+import Segreteria_Command.ConcreteCommands.ListaEsameCommand;
 import Segreteria_Command.Interfaces.ICommand;
+import Segreteria_Command.Invoker.Segreteria;
+import Segreteria_Command.Receiver.EsameManager;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-
-
-       /* Esame.Esame esame = new Esame.Esame("Matematica", LocalDateTime.now(), "Esame.Esame finale", "Prof. Rossi");
-        System.out.println(esame);*/
-
         try {
-            Segreteria segreteria = new Segreteria("localhost", 12345);
-            Esame esame = new Esame("Matematica", LocalDateTime.now(), "Esame.Esame di base", "Prof. Rossi");
-            ICommand command = new AggiungiEsameCommand(segreteria, esame);
-            command.execute();
+            // Configurazione della connessione
+            ServerConnection connection = new ServerConnection("localhost", 12345);
+            connection.connect();
+
+            // Receiver
+            EsameManager esameManager = new EsameManager(connection);
+
+            // Invoker
+            Segreteria segreteria = new Segreteria();
 
             // Aggiungi un esame
-           // Esame.Esame esame = new Esame.Esame("Matematica", LocalDateTime.now(), "Esame.Esame di base", "Prof. Rossi");
-           // System.out.println(segreteria.aggiungiEsame(esame));
-
-
+           /* Esame nuovoEsame = new Esame("Matematica", LocalDateTime.now(), "Descrizione", "Prof. Rossi");
+            ICommand aggiungiCommand = new AggiungiEsameCommand(esameManager, nuovoEsame);
+            segreteria.setCommand(aggiungiCommand);
+            System.out.println(segreteria.eseguiComando());*/
 
             // Ottieni la lista degli esami
-
-          //  ICommand command2 = new ListaEsameCommand(segreteria);
-          //  command2.execute();
-
-           // int id = 1;
-           // ICommand command3 = new EliminaEsameCommand(segreteria, id);
-           // command3.execute();
-
-            //List<Esame> esami = segreteria.getEsami();
-            //esami.forEach(System.out::println);
+            ICommand getEsamiCommand = new ListaEsameCommand(esameManager);
+            segreteria.setCommand(getEsamiCommand);
+            List<Esame> esami = (List<Esame>) segreteria.eseguiComando();
+            esami.forEach(System.out::println);
 
             // Cancella un esame
-            //System.out.println(segreteria.cancellaEsame(0));
+            /*ICommand cancellaCommand = new EliminaEsameCommand(esameManager, 1);
+            segreteria.setCommand(cancellaCommand);
+            System.out.println(segreteria.eseguiComando());*/
 
             // Chiudi la connessione
-            segreteria.chiudiConnessione();
+            connection.chiudiConnessione();
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-
     }
 }
