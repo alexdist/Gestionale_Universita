@@ -1,6 +1,9 @@
+package Esame;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class Esame {
+public class Esame implements Serializable {
 
     private String nomeEsame;
     private LocalDateTime dataEsame;
@@ -53,7 +56,7 @@ public class Esame {
 
     @Override
     public String toString() {
-        return "Esame: " + nomeEsame +
+        return "Esame.Esame: " + nomeEsame +
                 "\nData: " + dataEsame +
                 "\nDocente: " + nomeDocente +
                 "\nDescrizione: " + descrizione;

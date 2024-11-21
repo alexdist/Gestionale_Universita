@@ -1,9 +1,9 @@
-//SINGLETON
+package Server;//SINGLETON
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import Esame.Esame;
 
 public class ServerUniversitario {
 
@@ -41,13 +41,13 @@ public class ServerUniversitario {
         boolean esisteEsame = esisteEsamePerId(id);
         if(esisteEsame){
             esames.removeIf(esame -> esame.getIdEsame() == id);
-            System.out.println("Esame cancellato!");
+            System.out.println("Esame.Esame cancellato!");
         }
         else
-            System.out.println("Esame non trovato!");
+            System.out.println("Esame.Esame non trovato!");
     }
 
-/*
+
     // Esempio di un metodo per gestire richieste
     public void gestisciRichiesta(String richiesta) {
         System.out.println("Gestione richiesta: " + richiesta);
@@ -56,6 +56,6 @@ public class ServerUniversitario {
     // Esempio di metodo per chiudere il server
     public void chiudiServer() {
         System.out.println("Server Universitario Chiuso!");
-    }*/
+    }
 }
 
