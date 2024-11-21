@@ -38,4 +38,11 @@ public class EsameManager implements Serializable {
         Risposta risposta = (Risposta) connection.receive();
         return risposta.getMessaggio();
     }
+
+    public List<Esame> getEsamiPerCorso(String corso) throws IOException, ClassNotFoundException {
+        Richiesta richiesta = new Richiesta("GET_ESAMI_PER_CORSO", corso);
+        connection.send(richiesta);
+        Risposta risposta = (Risposta) connection.receive();
+        return risposta.getDati();
+    }
 }

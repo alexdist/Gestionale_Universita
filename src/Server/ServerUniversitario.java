@@ -3,6 +3,8 @@ package Server;//SINGLETON
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
+
 import Esame.Esame;
 
 public class ServerUniversitario {
@@ -45,6 +47,10 @@ public class ServerUniversitario {
         }
         else
             System.out.println("Esame.Esame non trovato!");
+    }
+
+    public List<Esame> getEsamiPerCorso(String nome){
+        return esames.stream().filter(esame -> esame.getNomeCorso().equals(nome)).collect(Collectors.toList());
     }
 
 

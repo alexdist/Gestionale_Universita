@@ -1,6 +1,7 @@
 package Segreteria_Command.Invoker;
 
 import Segreteria_Command.Interfaces.ICommand;
+import Segreteria_Command.Receiver.EsameManager;
 
 import java.io.IOException;
 
@@ -47,6 +48,11 @@ import java.io.IOException;
 public class Segreteria {
 
     private ICommand command;
+    private final EsameManager esameManager;
+
+    public Segreteria(EsameManager esameManager){
+        this.esameManager = esameManager;
+    }
 
     // Metodo per impostare il comando
     public void setCommand(ICommand command) {
@@ -59,6 +65,10 @@ public class Segreteria {
             throw new IllegalStateException("Nessun comando impostato.");
         }
         return command.execute();
+    }
+
+    public EsameManager getEsameManager() {
+        return esameManager;
     }
 }
 

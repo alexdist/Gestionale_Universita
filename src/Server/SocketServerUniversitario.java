@@ -75,7 +75,7 @@ public class SocketServerUniversitario {
         }
 
         // Metodo per processare la richiesta e restituire una risposta
-        private Risposta processaRichiesta(Richiesta richiesta) {
+        /*private Risposta processaRichiesta(Richiesta richiesta) {
             switch (richiesta.getTipo()) {
                 case "AGGIUNGI_ESAME":
                     serverUniversitario.aggiungiEsame(richiesta.getEsame());
@@ -87,6 +87,42 @@ public class SocketServerUniversitario {
                 case "CANCELLA_ESAME":
                     serverUniversitario.cancellaEsame(richiesta.getIdEsame());
                     return new Risposta("SUCCESSO", "Esame.Esame cancellato con successo!");
+
+
+                default:
+                    return new Risposta("ERRORE", "Tipo di richiesta non riconosciuto.");
+            }
+        }*/
+        private Risposta processaRichiesta(Richiesta richiesta) {
+            switch (richiesta.getTipo()) {
+                case "AGGIUNGI_ESAME":
+                    //Esame esame = richiesta.getEsame();
+
+                        serverUniversitario.aggiungiEsame(richiesta.getEsame());
+                        return new Risposta("SUCCESSO", "Esame aggiunto con successo!");
+
+                        //return new Risposta("ERRORE", "Dati mancanti per l'aggiunta dell'esame.");
+
+
+                case "GET_ESAMI":
+                    return new Risposta("SUCCESSO", serverUniversitario.getEsames());
+
+                case "CANCELLA_ESAME":
+                    int idEsame = richiesta.getIdEsame();
+                    if (idEsame != -1) {
+                        serverUniversitario.cancellaEsame(idEsame);
+                        return new Risposta("SUCCESSO", "Esame cancellato con successo!");
+                    } else {
+                        return new Risposta("ERRORE", "ID dell'esame non valido.");
+                    }
+
+                case "GET_ESAMI_PER_CORSO":
+                    String corso = richiesta.getCorso();
+                    if (corso != null && !corso.isEmpty()) {
+                        return new Risposta("SUCCESSO", serverUniversitario.getEsamiPerCorso(corso));
+                    } else {
+                        return new Risposta("ERRORE", "Nome del corso non valido.");
+                    }
 
                 default:
                     return new Risposta("ERRORE", "Tipo di richiesta non riconosciuto.");
