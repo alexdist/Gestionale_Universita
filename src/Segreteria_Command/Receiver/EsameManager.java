@@ -45,4 +45,11 @@ public class EsameManager implements Serializable {
         Risposta risposta = (Risposta) connection.receive();
         return risposta.getDati();
     }
+
+    public String prenotaEsame(int idEsame) throws IOException, ClassNotFoundException {
+        Richiesta richiesta = new Richiesta("PRENOTA_ESAME", idEsame);
+        connection.send(richiesta);
+        Risposta risposta = (Risposta) connection.receive();
+        return risposta.getMessaggio();
+    }
 }

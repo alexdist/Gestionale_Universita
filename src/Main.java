@@ -2,6 +2,7 @@ import Esame.Esame;
 import Segreteria_Command.*;
 import Segreteria_Command.ConcreteCommands.AggiungiEsameCommand;
 import Segreteria_Command.ConcreteCommands.ListaEsameCommand;
+import Segreteria_Command.ConcreteCommands.PrenotaEsameCommand;
 import Segreteria_Command.Interfaces.ICommand;
 import Segreteria_Command.Invoker.Segreteria;
 import Segreteria_Command.Receiver.EsameManager;
@@ -25,7 +26,7 @@ public class Main {
             Segreteria segreteria = new Segreteria(esameManager);
 
             // Aggiungi un esame
-            /*Esame nuovoEsame = new Esame("Matematica", LocalDateTime.now(), "EsameOrale", "Prof. Bianchi");
+            /*Esame nuovoEsame = new Esame("Matematica", LocalDateTime.now(), "EsameScritto", "Prof. Bianchi", 5);
             ICommand aggiungiCommand = new AggiungiEsameCommand(esameManager, nuovoEsame);
             segreteria.setCommand(aggiungiCommand);
             System.out.println(segreteria.eseguiComando());*/
@@ -34,7 +35,11 @@ public class Main {
             Studente studente = new Studente(segreteria);
 
             // Lo studente richiede esami per un corso
-            studente.visualizzaEsamiPerCorso("Matematica");
+            //studente.visualizzaEsamiPerCorso("Matematica");
+
+            //Studente prenota esame
+            studente.prenotaEsame(0);
+
 
             // Ottieni la lista degli esami
             /*ICommand getEsamiCommand = new ListaEsameCommand(esameManager);

@@ -124,6 +124,10 @@ public class SocketServerUniversitario {
                         return new Risposta("ERRORE", "Nome del corso non valido.");
                     }
 
+                case "PRENOTA_ESAME":
+                    String risultato = serverUniversitario.prenotaEsame(richiesta.getIdEsame());
+                    return new Risposta("SUCCESSO", risultato);
+
                 default:
                     return new Risposta("ERRORE", "Tipo di richiesta non riconosciuto.");
             }

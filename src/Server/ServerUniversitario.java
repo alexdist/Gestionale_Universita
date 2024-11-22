@@ -53,6 +53,28 @@ public class ServerUniversitario {
         return esames.stream().filter(esame -> esame.getNomeCorso().equals(nome)).collect(Collectors.toList());
     }
 
+    public synchronized String prenotaEsame(int idEsame) {
+        // Controlla se l'esame esiste
+        if (!esisteEsamePerId(idEsame)) {
+            return "Errore: Esame non trovato.";
+        }
+
+        // Trova l'esame e tenta di prenotarlo
+        for (Esame esame : esames) {
+            if (esame.getIdEsame() == idEsame) {
+                try {
+                    esame.prenota();
+                    return "Prenotazione effettuata con successo! Prenotazione n° " + esame.getNumeroPrenotazione();
+                } catch (IllegalStateException e) {
+                    return "Errore: " + e.getMessage();
+                }
+            }
+        }
+
+        return "Errore sconosciuto durante la prenotazione.";
+    }
+
+
 
     // Esempio di un metodo per gestire richieste
     public void gestisciRichiesta(String richiesta) {

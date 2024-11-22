@@ -10,6 +10,7 @@ public class Esame implements Serializable {
     private String nomeDocente;
     private String descrizione;
     private int idEsame;
+    private int prenotazioniMassime;
     private int numeroPrenotazione;
 
     public Esame(String nomeCorso, LocalDateTime dataEsame, String descrizione, String nomeDocente){
@@ -20,13 +21,14 @@ public class Esame implements Serializable {
         this.idEsame = 0;
     }
 
-    public Esame(String nomeCorso, LocalDateTime dataEsame, String descrizione, String nomeDocente, int numeroPrenotazione){
+    public Esame(String nomeCorso, LocalDateTime dataEsame, String descrizione, String nomeDocente, int prenotazioniMassime){
         this.nomeCorso = nomeCorso;
         this.dataEsame = dataEsame;
         this.descrizione = descrizione;
         this.nomeDocente = nomeDocente;
         this.idEsame = 0;
-        this.numeroPrenotazione = numeroPrenotazione;
+        this.prenotazioniMassime = prenotazioniMassime;
+        this.numeroPrenotazione = 0;
     }
 
     public void setNomeEsame(String nomeE){
@@ -58,6 +60,31 @@ public class Esame implements Serializable {
 
     public String getNomeDocente(){
         return this.nomeDocente;
+    }
+
+    public synchronized void decrementaNumeroPrenotazioni(){
+        //this.prenotazioniMassime--;
+        this.numeroPrenotazione--;
+    }
+
+    public synchronized void incrementaNumeroPrenotazioni(){
+       // this.prenotazioniMassime++;
+        this.numeroPrenotazione++;
+    }
+
+    public int getNumeroPrenotazione(){
+        return this.numeroPrenotazione;
+    }
+
+    public synchronized boolean isPrenotabile() {
+        return numeroPrenotazione < prenotazioniMassime;
+    }
+
+    public synchronized void prenota() {
+        if (!isPrenotabile()) {
+            throw new IllegalStateException("Numero massimo di prenotazioni raggiunto.");
+        }
+        incrementaNumeroPrenotazioni();
     }
 
     public int getIdEsame(){
