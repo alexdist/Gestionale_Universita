@@ -1,11 +1,10 @@
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
 
 public class UniversityServer {
 
@@ -104,8 +103,82 @@ class ClientHandler implements Runnable {
     }
 
     private void login(Packet packet, ObjectOutputStream output) throws IOException {
-        // Implementazione della logica del login
+        System.out.println("Tentativo di login ricevuto.");
+
+        // Estrazione dell'oggetto Studente dal pacchetto
+        IStudente studente = (StudenteUniversitario) packet.data;
+        String nome = studente.getNome();
+        String cognome = studente.getCognome();
+
+        // Simulazione di un database con nomi e cognomi
+        List<String> databaseUtenti = new ArrayList<>();
+        databaseUtenti.add("Mario Rossi");
+        databaseUtenti.add("Luigi Bianchi");
+
+        // Verifica delle credenziali (solo nome e cognome)
+        boolean autenticato = databaseUtenti.contains(nome + " " + cognome);
+
+        // Preparazione della risposta
+        Packet response = new Packet();
+        if (autenticato) {
+            System.out.println("Autenticazione riuscita per l'utente: " + cognome);
+            response.error = new Error("OK", "", "Autenticazione riuscita.");
+        } else {
+            System.out.println("Autenticazione fallita per l'utente: " + cognome);
+            response.error = new Error("AUTH_ERROR", "Login", "Credenziali non valide.");
+        }
+
+        // Invio della risposta al client
+        output.writeObject(response);
     }
+
+    private void prenotaEsame(Packet packet, ObjectOutputStream output) throws IOException {
+        System.out.println("Tentativo di prenotazione esame...");
+        UniversityServer server = UniversityServer.getInstance();
+        List<Esame> esamiList = server.getEsamiList();
+
+        // Estrazione dell'oggetto Prenotazione dal pacchetto
+        Prenotazione prenotazione = (Prenotazione) packet.data;
+        int matricola = prenotazione.getMatricola();
+        long codiceEsame = prenotazione.getCodiceEsame();
+
+        // Ricerca dell'esame
+        Esame esameTrovato = null;
+        for (Esame esame : esamiList) {
+            if (esame.getCodiceEsame() == codiceEsame) {
+                esameTrovato = esame;
+                break;
+            }
+        }
+
+        Packet response = new Packet();
+        if (esameTrovato == null) {
+            // Esame non trovato
+            System.out.println("Esame con codice " + codiceEsame + " non trovato.");
+            response.error = new Error("NOT_FOUND", "Prenotazione", "Esame non trovato.");
+            response.data = null;
+        } else {
+            // Controllo disponibilità posti
+            if (esameTrovato.getNumeroPrenotazione() < esameTrovato.getNumeroMassimoPrenotati()) {
+                // Lo studente può prenotarsi
+                esameTrovato.incrementaNumeroPrenotazione();
+                int numeroPrenotazione = esameTrovato.getNumeroPrenotazione();
+                System.out.println("Studente con matricola " + matricola + " prenotato con successo per l'esame " + codiceEsame);
+                response.error = new Error("OK", "", "Prenotazione effettuata con successo.");
+                response.data = numeroPrenotazione;
+            } else {
+                // L'esame ha raggiunto il numero massimo di prenotati
+                System.out.println("Esame " + codiceEsame + " pieno. Prenotazione non riuscita per studente con matricola " + matricola);
+                response.error = new Error("FULL", "Prenotazione", "Numero massimo di prenotati raggiunto.");
+                response.data = null;
+            }
+        }
+
+        // Invia la risposta al client
+        output.writeObject(response);
+
+    }
+
 
     private void inserisciEsame(Packet packet, ObjectOutputStream output) throws IOException {
         UniversityServer server = UniversityServer.getInstance();
@@ -160,9 +233,7 @@ class ClientHandler implements Runnable {
     }
 
 
-    private void prenotaEsame(Packet packet, ObjectOutputStream output) throws IOException {
-        // Implementazione per PRENOTA_ESAME
-    }
+
 
     private void sendError(String message, ObjectOutputStream output) throws IOException {
         Packet errorPacket = new Packet();
