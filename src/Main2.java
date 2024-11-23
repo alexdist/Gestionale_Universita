@@ -1,7 +1,7 @@
 import java.io.IOException;
 
-public class Main {
-   /* public static void main(String[] args) {
+public class Main2 {
+    /* public static void main(String[] args) {
         StudenteClient client = new StudenteClient("127.0.0.1", 12345);
         MenuStudente menu = new MenuStudente(client);
         menu.mostraMenu();
