@@ -10,6 +10,7 @@ public class Esame implements Serializable {
     private String presidente;
     private long codiceEsame;
     private int numeroMassimoPrenotati;
+    private int numeroPrenotazione;
 
     public Esame(String attivitaDidattica, LocalDateTime dataAppello, String descrizione, String presidente, long codiceEsame, int numeroMassimoPrenotati) {
         this.attivitaDidattica = attivitaDidattica;
@@ -18,6 +19,15 @@ public class Esame implements Serializable {
         this.presidente = presidente;
         this.codiceEsame = codiceEsame;
         this.numeroMassimoPrenotati = numeroMassimoPrenotati;
+        this.numeroPrenotazione = 0;
+    }
+
+    public int getNumeroMassimoPrenotati() {
+        return numeroMassimoPrenotati;
+    }
+
+    public int getNumeroPrenotazione(){
+        return numeroPrenotazione;
     }
 
     public String getAttivitaDidattica() {
@@ -58,6 +68,10 @@ public class Esame implements Serializable {
 
     public void setCodiceEsame(long codiceEsame) {
         this.codiceEsame = codiceEsame;
+    }
+
+    public void incrementaNumeroPrenotazione(){
+        numeroPrenotazione++;
     }
 }
 
