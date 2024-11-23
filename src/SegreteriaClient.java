@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
-public class SegreteriaClient {
+/*public class SegreteriaClient {
 
     private static final String SERVER_IP = "127.0.0.1";
     private static final int UNI_SERVER_PORT = 12345;
@@ -90,6 +90,45 @@ public class SegreteriaClient {
             Packet risposta = (Packet) input.readObject();
             if (risposta.error.getCode().equals("OK")) {
                 System.out.println("Esame inserito con successo");
+            } else {
+                System.out.println("Errore nell'inserimento dell'esame: " + risposta.error.getDescription());
+            }
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Errore durante l'invio della richiesta: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+}*/
+
+import java.io.*;
+import java.net.Socket;
+import java.time.LocalDateTime;
+
+public class SegreteriaClient {
+    private final String serverIp;
+    private final int serverPort;
+
+    public SegreteriaClient(String serverIp, int serverPort) {
+        this.serverIp = serverIp;
+        this.serverPort = serverPort;
+    }
+
+    public void aggiungiEsame(Esame esame) {
+        try (Socket clientSocket = new Socket(serverIp, serverPort);
+             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
+             ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream())) {
+
+            // Crea il pacchetto per la richiesta
+            Packet richiesta = new Packet("INSERISCI_ESAME", esame, null);
+
+            // Invia la richiesta al server
+            output.writeObject(richiesta);
+
+            // Riceve la risposta
+            Packet risposta = (Packet) input.readObject();
+            if ("OK".equals(risposta.error.getCode())) {
+                System.out.println("Esame inserito con successo.");
             } else {
                 System.out.println("Errore nell'inserimento dell'esame: " + risposta.error.getDescription());
             }

@@ -1,11 +1,8 @@
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
 
+/*
 public class StudenteClient {
 
     private static final String SERVER_IP = "127.0.0.1";
@@ -124,7 +121,114 @@ public class StudenteClient {
 
         }
     }
+}*/
+
+import java.util.List;
+
+public class StudenteClient {
+
+    private final String serverIp;
+    private final int serverPort;
+    private IStudente studente;
+
+    public StudenteClient(String serverIp, int serverPort, IStudente studente) {
+        this.serverIp = serverIp;
+        this.serverPort = serverPort;
+        this.studente = studente;
+    }
+
+    public StudenteClient(String serverIp, int serverPort) {
+        this.serverIp = serverIp;
+        this.serverPort = serverPort;
+    }
+
+    // Metodo per autenticare uno studente
+    public boolean autenticaStudente() throws IOException, ClassNotFoundException {
+        Packet richiesta = new Packet();
+        richiesta.request = "LOGIN";
+        richiesta.data = this.studente; // Inserisce l'oggetto IStudente nel pacchetto
+
+        Packet risposta = inviaRichiestaGenerica(richiesta);
+
+        // Verifica la risposta del server
+        if ("OK".equals(risposta.error.getCode())) {
+            System.out.println("Autenticazione riuscita per lo studente.");
+            return true;
+        } else {
+            System.out.println("Errore nell'autenticazione: " + risposta.error.getDescription());
+            return false;
+        }
+    }
+
+    public void prenotaAppello(long codiceEsame) throws IOException, ClassNotFoundException {
+        Packet richiesta = new Packet();
+        richiesta.request = "PRENOTA_ESAME";
+        richiesta.data = new Prenotazione(studente.getMatricola(), codiceEsame);
+
+        try {
+            Packet risposta = inviaRichiestaGenerica(richiesta);
+            if ("OK".equals(risposta.error.getCode())) {
+                int numeroProgressivo = (int) risposta.data;
+                System.out.println("Prenotazione effettuata con successo! Numero progressivo prenotazione: " + numeroProgressivo);
+            } else {
+                System.out.println("Errore nella prenotazione: " + risposta.error.getDescription());
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Errore durante la prenotazione: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Metodo per inviare richieste generiche al server
+    private Packet inviaRichiestaGenerica(Packet richiesta) throws IOException, ClassNotFoundException {
+        try (Socket clientSocket = new Socket(serverIp, serverPort);
+             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
+             ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream())) {
+
+            // Invia il pacchetto al server
+            output.writeObject(richiesta);
+
+            // Riceve la risposta dal server
+            return (Packet) input.readObject();
+        }
+    }
+
+
+
+    public List<Esame> visualizzaEsami() throws IOException, ClassNotFoundException {
+        Packet richiesta = new Packet();
+        richiesta.request = "VISUALIZZA_ESAME";
+        richiesta.data = null;
+
+        return inviaRichiesta(richiesta);
+    }
+
+    public List<Esame> visualizzaEsamiCorso(String corso) throws IOException, ClassNotFoundException {
+        Packet richiesta = new Packet();
+        richiesta.request = "VISUALIZZA_ESAME_CORSO";
+        richiesta.data = corso;
+
+        return inviaRichiesta(richiesta);
+    }
+
+    // Metodo per inviare richieste specifiche (Esami) al server
+    private List<Esame> inviaRichiesta(Packet richiesta) throws IOException, ClassNotFoundException {
+        try (Socket clientSocket = new Socket(serverIp, serverPort);
+             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
+             ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream())) {
+
+            output.writeObject(richiesta);
+            Packet risposta = (Packet) input.readObject();
+
+            if ("OK".equals(risposta.error.getCode())) {
+                return (List<Esame>) risposta.data;
+            } else {
+                throw new IOException("Errore dal server: " + risposta.error.getDescription());
+            }
+        }
+    }
 }
+
 
 
 
