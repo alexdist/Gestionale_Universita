@@ -80,6 +80,10 @@ class ClientHandler implements Runnable {
                     visualizzaEsami(packet, output);
                     break;
 
+                case "VISUALIZZA_ESAME_CORSO":
+                    visualizzaEsamiCorso(packet, output);
+                    break;
+
                 case "PRENOTA_ESAME":
                     prenotaEsame(packet, output);
                     break;
@@ -125,6 +129,36 @@ class ClientHandler implements Runnable {
         response.error = new Error("OK", "", "Esami visualizzati correttamente.");
         output.writeObject(response);
     }
+
+    private void visualizzaEsamiCorso(Packet packet, ObjectOutputStream output) throws IOException {
+        UniversityServer server = UniversityServer.getInstance();
+        List<Esame> esamiList = server.getEsamiList();
+
+        // Estrai il nome del corso dal pacchetto
+        String corso = (String) packet.data;
+
+        // Filtra gli esami associati al corso
+        List<Esame> esamiFiltrati = new ArrayList<>();
+        for (Esame esame : esamiList) {
+            if (esame.getAttivitaDidattica().equalsIgnoreCase(corso)) {
+                esamiFiltrati.add(esame);
+            }
+        }
+
+        // Prepara il pacchetto di risposta
+        Packet response = new Packet();
+        if (!esamiFiltrati.isEmpty()) {
+            response.data = esamiFiltrati;
+            response.error = new Error("OK", "", "Esami del corso '" + corso + "' visualizzati correttamente.");
+        } else {
+            response.data = null;
+            response.error = new Error("EMPTY", "Visualizza Esami", "Nessun esame trovato per il corso '" + corso + "'.");
+        }
+
+        // Invia la risposta al client
+        output.writeObject(response);
+    }
+
 
     private void prenotaEsame(Packet packet, ObjectOutputStream output) throws IOException {
         // Implementazione per PRENOTA_ESAME
