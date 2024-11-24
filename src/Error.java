@@ -12,7 +12,7 @@ public class Error implements Serializable {
         this.description = description;
     }
 
-    // Getter e Setter (se necessari)
+    // Getter e Setter
     public String getCode() {
         return code;
     }

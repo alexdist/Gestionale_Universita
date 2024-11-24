@@ -17,6 +17,7 @@ public class MenuStudente {
             System.out.println("Benvenuto nel gestionale dell'università!");
             System.out.println("1) Visualizza gli esami disponibili");
             System.out.println("2) Visualizza gli esami disponibili per uno specifico Corso");
+            System.out.println("3) Prenota un Esame");
             System.out.println("0) Esci");
             System.out.print("Scelta: ");
             int scelta = scanner.nextInt();
@@ -29,7 +30,7 @@ public class MenuStudente {
                     visualizzaEsamiCorso();
                     break;
 
-                case 3:
+                    case 3:
                     prenotaEsame();
                     break;
                 case 0:

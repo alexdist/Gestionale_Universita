@@ -24,13 +24,15 @@ public class Main2 {
     }*/
 
 
-   /* public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         SegreteriaClient client = new SegreteriaClient("127.0.0.1", 12345);
         SegreteriaMenu menu = new SegreteriaMenu(client);
         menu.avvia();
-    }*/
+    }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+
+
+   /* public static void main(String[] args) throws IOException, ClassNotFoundException {
         // Crea un oggetto Studente per il test
         IStudente studente = new StudenteUniversitario("Mario", "Rossi", 67890);
 
@@ -45,5 +47,5 @@ public class Main2 {
 
         // Test: Prenotazione esame
         menu.mostraMenu();
-    }
+    }*/
 }
