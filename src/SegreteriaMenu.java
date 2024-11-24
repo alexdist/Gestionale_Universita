@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
@@ -8,7 +9,7 @@ public class SegreteriaMenu {
         this.client = client;
     }
 
-    public void avvia() {
+    public void avvia() throws IOException {
         Scanner scanner = new Scanner(System.in);
         int scelta;
 
@@ -16,6 +17,7 @@ public class SegreteriaMenu {
             System.out.println("Benvenuto nel gestionale dell'università");
             System.out.println("Seleziona cosa vuoi fare:");
             System.out.println("1) Aggiungi un nuovo esame");
+            System.out.println("2) Elimina un esame");
 
             System.out.println("0) Esci");
 
@@ -28,7 +30,7 @@ public class SegreteriaMenu {
                     creaEsame(scanner); // Chiamata al metodo rinominato
                     break;
                 case 2:
-
+                    eliminaEsame(scanner);
                     break;
                 case 0:
                     System.out.println("Uscita...");
@@ -40,6 +42,12 @@ public class SegreteriaMenu {
         } while (scelta != 0);
 
         scanner.close();
+    }
+
+    private void eliminaEsame(Scanner scanner) throws IOException {
+        System.out.println("Inserisci il codice dell'esame: ");
+        long codice = scanner.nextLong();
+        client.eliminaEsame(codice);
     }
 
     private void creaEsame(Scanner scanner) {

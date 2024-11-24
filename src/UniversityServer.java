@@ -87,6 +87,11 @@ class ClientHandler implements Runnable {
                     prenotaEsame(packet, output);
                     break;
 
+                case "ELIMINA_ESAME":
+                    eliminaEsame(packet, output);
+                    break;
+
+
                 default:
                     sendError("Bad request", output);
             }
@@ -192,6 +197,42 @@ class ClientHandler implements Runnable {
         response.error = new Error("OK", "", "Esame inserito correttamente.");
         output.writeObject(response);
     }
+
+    private void eliminaEsame(Packet packet, ObjectOutputStream output) throws IOException {
+        UniversityServer server = UniversityServer.getInstance();
+        List<Esame> esamiList = server.getEsamiList();
+
+        long codiceEsame = (long) packet.data;
+
+        // Ricerca dell'esame
+        Esame esameTrovato = null;
+        for (Esame esame : esamiList) {
+            if (esame.getCodiceEsame() == codiceEsame) {
+                esameTrovato = esame;
+                break;
+            }
+        }
+
+        Packet response = new Packet();
+       // response.request = "ELIMINA_ESAME";
+
+        if (esameTrovato == null) {
+            // Esame non trovato
+            System.out.println("Esame con codice " + codiceEsame + " non trovato.");
+            response.error = new Error("NOT_FOUND", "EliminaEsame", "Esame non trovato.");
+            response.data = null;
+        } else {
+            // Esame trovato e rimosso
+            esamiList.remove(esameTrovato);
+            System.out.println("Esame di " + esameTrovato.getAttivitaDidattica() + " con codice " + codiceEsame + " eliminato con successo!");
+            response.error = new Error("OK", "", "Esame eliminato con successo.");
+            response.data = null;
+        }
+
+        // Invio della risposta al client
+        output.writeObject(response);
+    }
+
 
     private void visualizzaEsami(Packet packet, ObjectOutputStream output) throws IOException {
         UniversityServer server = UniversityServer.getInstance();
