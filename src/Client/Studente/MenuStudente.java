@@ -1,3 +1,7 @@
+package Client.Studente;
+
+import Client.Esame;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -6,18 +10,20 @@ public class MenuStudente {
 
     private final StudenteClient client;
 
+    private boolean autenticato = false; // Flag per il login
+
     public MenuStudente(StudenteClient client) {
         this.client = client;
     }
 
-    public void mostraMenu() throws IOException, ClassNotFoundException {
+    /*public void mostraMenu() throws IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             System.out.println("Benvenuto nel gestionale dell'università!");
             System.out.println("1) Visualizza gli esami disponibili");
             System.out.println("2) Visualizza gli esami disponibili per uno specifico Corso");
-            System.out.println("3) Prenota un Esame");
+            System.out.println("3) Prenota un Client.Esame");
             System.out.println("0) Esci");
             System.out.print("Scelta: ");
             int scelta = scanner.nextInt();
@@ -33,6 +39,48 @@ public class MenuStudente {
                     case 3:
                     prenotaEsame();
                     break;
+
+                case 4:
+                    effettuaLogin();
+                    break;
+
+                case 0:
+                    System.out.println("Uscita...");
+                    return;
+                default:
+                    System.out.println("Scelta non riconosciuta, riprova.");
+            }
+        }
+    }*/
+
+    public void mostraMenu() throws IOException, ClassNotFoundException {
+        Scanner scanner = new Scanner(System.in);
+
+        // Esegui il login all'inizio
+        while (!autenticato) {
+            System.out.println("Esegui il login per accedere al sistema.");
+            effettuaLogin();
+        }
+
+        while (true) {
+            System.out.println("\n\nBenvenuto nel gestionale dell'università!");
+            System.out.println("1) Visualizza gli esami disponibili");
+            System.out.println("2) Visualizza gli esami disponibili per uno specifico Corso");
+            System.out.println("3) Prenota un Esame");
+            System.out.println("0) Esci");
+            System.out.print("Scelta: ");
+            int scelta = scanner.nextInt();
+
+            switch (scelta) {
+                case 1:
+                    visualizzaEsami();
+                    break;
+                case 2:
+                    visualizzaEsamiCorso();
+                    break;
+                case 3:
+                    prenotaEsame();
+                    break;
                 case 0:
                     System.out.println("Uscita...");
                     return;
@@ -41,6 +89,39 @@ public class MenuStudente {
             }
         }
     }
+
+   /* private void effettuaLogin() throws IOException, ClassNotFoundException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Inserisci il nome: ");
+        String nome = scanner.nextLine();
+        System.out.print("Inserisci il cognome: ");
+        String cognome = scanner.nextLine();
+        Client.Studente.IStudente studente = new Client.Studente.StudenteUniversitario(nome, cognome);
+        client.autenticaStudente(studente);
+    }*/
+
+    private void effettuaLogin() throws IOException, ClassNotFoundException {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Inserisci i dati per effettuare il login:");
+            System.out.print("Nome: ");
+            String nome = scanner.nextLine();
+            System.out.print("Cognome: ");
+            String cognome = scanner.nextLine();
+
+            IStudente studente = new StudenteUniversitario(nome, cognome);
+
+            if (client.autenticaStudente(studente)) {
+                System.out.println("Login avvenuto con successo!");
+                autenticato = true;
+                break;
+            } else {
+                System.out.println("Login fallito. Riprova.");
+            }
+        }
+    }
+
 
     private void visualizzaEsami() {
         try {

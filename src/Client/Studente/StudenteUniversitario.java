@@ -1,3 +1,5 @@
+package Client.Studente;
+
 import java.io.Serializable;
 
 public class StudenteUniversitario implements IStudente, Serializable {

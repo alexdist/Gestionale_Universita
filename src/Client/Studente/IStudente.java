@@ -1,3 +1,5 @@
+package Client.Studente;
+
 public interface IStudente {
     // Metodi get
     String getNome();

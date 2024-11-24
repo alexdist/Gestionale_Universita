@@ -1,9 +1,16 @@
+package Server;
+
+import Client.Esame;
+import Client.Studente.IStudente;
+import Client.Studente.StudenteUniversitario;
+import Pacchetto.CustomError;
+import Pacchetto.Packet;
+import Pacchetto.Prenotazione;
+
 import java.io.*;
+//import java.lang.Pacchetto.Error;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 public class UniversityServer {
@@ -18,6 +25,7 @@ public class UniversityServer {
     private static UniversityServer instance;
 
     private final List<Esame> esamiList = new ArrayList<>(); // Risorsa condivisa
+
 
     private UniversityServer() {
         // Costruttore privato per impedire istanze multiple
@@ -49,7 +57,9 @@ public class UniversityServer {
             e.printStackTrace();
         }
     }
+
 }
+
 
 class ClientHandler implements Runnable {
     private Socket clientSocket;
@@ -107,6 +117,8 @@ class ClientHandler implements Runnable {
         }
     }
 
+
+
     private void login(Packet packet, ObjectOutputStream output) throws IOException {
         System.out.println("Tentativo di login ricevuto.");
 
@@ -127,22 +139,23 @@ class ClientHandler implements Runnable {
         Packet response = new Packet();
         if (autenticato) {
             System.out.println("Autenticazione riuscita per l'utente: " + cognome);
-            response.error = new Error("OK", "", "Autenticazione riuscita.");
+            response.error = new CustomError("OK", "", "Autenticazione riuscita.");
         } else {
             System.out.println("Autenticazione fallita per l'utente: " + cognome);
-            response.error = new Error("AUTH_ERROR", "Login", "Credenziali non valide.");
+            response.error = new CustomError("AUTH_ERROR", "Login", "Credenziali non valide.");
         }
 
         // Invio della risposta al client
         output.writeObject(response);
     }
 
+
     private void prenotaEsame(Packet packet, ObjectOutputStream output) throws IOException {
         System.out.println("Tentativo di prenotazione esame...");
         UniversityServer server = UniversityServer.getInstance();
         List<Esame> esamiList = server.getEsamiList();
 
-        // Estrazione dell'oggetto Prenotazione dal pacchetto
+        // Estrazione dell'oggetto Pacchetto.Prenotazione dal pacchetto
         Prenotazione prenotazione = (Prenotazione) packet.data;
         int matricola = prenotazione.getMatricola();
         long codiceEsame = prenotazione.getCodiceEsame();
@@ -158,23 +171,26 @@ class ClientHandler implements Runnable {
 
         Packet response = new Packet();
         if (esameTrovato == null) {
-            // Esame non trovato
+            // Client.Esame non trovato
             System.out.println("Esame con codice " + codiceEsame + " non trovato.");
-            response.error = new Error("NOT_FOUND", "Prenotazione", "Esame non trovato.");
+            response.error = new CustomError("NOT_FOUND", "Prenotazione", "Esame non trovato.");
             response.data = null;
         } else {
             // Controllo disponibilità posti
             if (esameTrovato.getNumeroPrenotazione() < esameTrovato.getNumeroMassimoPrenotati()) {
                 // Lo studente può prenotarsi
                 esameTrovato.incrementaNumeroPrenotazione();
+
+
+
                 int numeroPrenotazione = esameTrovato.getNumeroPrenotazione();
                 System.out.println("Studente con matricola " + matricola + " prenotato con successo per l'esame " + codiceEsame);
-                response.error = new Error("OK", "", "Prenotazione effettuata con successo.");
+                response.error = new CustomError("OK", "", "Prenotazione effettuata con successo.");
                 response.data = numeroPrenotazione;
             } else {
                 // L'esame ha raggiunto il numero massimo di prenotati
                 System.out.println("Esame " + codiceEsame + " pieno. Prenotazione non riuscita per studente con matricola " + matricola);
-                response.error = new Error("FULL", "Prenotazione", "Numero massimo di prenotati raggiunto.");
+                response.error = new CustomError("FULL", "Prenotazione", "Numero massimo di prenotati raggiunto.");
                 response.data = null;
             }
         }
@@ -183,6 +199,8 @@ class ClientHandler implements Runnable {
         output.writeObject(response);
 
     }
+
+
 
 
     private void inserisciEsame(Packet packet, ObjectOutputStream output) throws IOException {
@@ -194,10 +212,12 @@ class ClientHandler implements Runnable {
         System.out.println("Esame inserito: " + esame);
 
         Packet response = new Packet();
-        response.error = new Error("OK", "", "Esame inserito correttamente.");
+        response.error = new CustomError("OK", "", "Esame inserito correttamente.");
         output.writeObject(response);
     }
 
+
+    //Devo far in modo che questa funzione possa essere attivata solo se le prenotazioni per quell'esame sono 0.
     private void eliminaEsame(Packet packet, ObjectOutputStream output) throws IOException {
         UniversityServer server = UniversityServer.getInstance();
         List<Esame> esamiList = server.getEsamiList();
@@ -217,15 +237,15 @@ class ClientHandler implements Runnable {
        // response.request = "ELIMINA_ESAME";
 
         if (esameTrovato == null) {
-            // Esame non trovato
+            // Client.Esame non trovato
             System.out.println("Esame con codice " + codiceEsame + " non trovato.");
-            response.error = new Error("NOT_FOUND", "EliminaEsame", "Esame non trovato.");
+            response.error = new CustomError("NOT_FOUND", "EliminaEsame", "Esame non trovato.");
             response.data = null;
         } else {
-            // Esame trovato e rimosso
+            // Client.Esame trovato e rimosso
             esamiList.remove(esameTrovato);
             System.out.println("Esame di " + esameTrovato.getAttivitaDidattica() + " con codice " + codiceEsame + " eliminato con successo!");
-            response.error = new Error("OK", "", "Esame eliminato con successo.");
+            response.error = new CustomError("OK", "", "Esame eliminato con successo.");
             response.data = null;
         }
 
@@ -240,7 +260,7 @@ class ClientHandler implements Runnable {
 
         Packet response = new Packet();
         response.data = esamiList;
-        response.error = new Error("OK", "", "Esami visualizzati correttamente.");
+        response.error = new CustomError("OK", "", "Esami visualizzati correttamente.");
         output.writeObject(response);
     }
 
@@ -263,10 +283,10 @@ class ClientHandler implements Runnable {
         Packet response = new Packet();
         if (!esamiFiltrati.isEmpty()) {
             response.data = esamiFiltrati;
-            response.error = new Error("OK", "", "Esami del corso '" + corso + "' visualizzati correttamente.");
+            response.error = new CustomError("OK", "", "Esami del corso '" + corso + "' visualizzati correttamente.");
         } else {
             response.data = null;
-            response.error = new Error("EMPTY", "Visualizza Esami", "Nessun esame trovato per il corso '" + corso + "'.");
+            response.error = new CustomError("EMPTY", "Visualizza Esami", "Nessun esame trovato per il corso '" + corso + "'.");
         }
 
         // Invia la risposta al client
@@ -278,7 +298,7 @@ class ClientHandler implements Runnable {
 
     private void sendError(String message, ObjectOutputStream output) throws IOException {
         Packet errorPacket = new Packet();
-        errorPacket.error = new Error("GENERIC", "Bad request", message);
+        errorPacket.error = new CustomError("GENERIC", "Bad request", message);
         output.writeObject(errorPacket);
     }
 }

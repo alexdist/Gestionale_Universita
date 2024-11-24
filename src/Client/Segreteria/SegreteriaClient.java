@@ -1,10 +1,11 @@
-import java.io.*;
-import java.net.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Scanner;
+package Client.Segreteria;
 
-/*public class SegreteriaClient {
+import Client.Esame;
+import Pacchetto.Packet;
+
+import java.io.*;
+
+/*public class Client.Segreteria.SegreteriaClient {
 
     private static final String SERVER_IP = "127.0.0.1";
     private static final int UNI_SERVER_PORT = 12345;
@@ -76,20 +77,20 @@ import java.util.Scanner;
 
 
 
-            // Crea l'oggetto Esame
-            Esame esame = new Esame(attivitaDidattica, dataAppello, descrizione, nomeProfessore, codiceEsame, numeroMassimoPrenotati);
+            // Crea l'oggetto Client.Esame
+            Client.Esame esame = new Client.Esame(attivitaDidattica, dataAppello, descrizione, nomeProfessore, codiceEsame, numeroMassimoPrenotati);
 
             // Crea il pacchetto per la richiesta
-            Packet richiesta = new Packet("INSERISCI_ESAME", esame, null);
+            Pacchetto.Packet richiesta = new Pacchetto.Packet("INSERISCI_ESAME", esame, null);
 
             // Invia la richiesta e i dati al server
             output.writeObject(richiesta);
             output.writeObject(esame);
 
             // Riceve la risposta
-            Packet risposta = (Packet) input.readObject();
+            Pacchetto.Packet risposta = (Pacchetto.Packet) input.readObject();
             if (risposta.error.getCode().equals("OK")) {
-                System.out.println("Esame inserito con successo");
+                System.out.println("Client.Esame inserito con successo");
             } else {
                 System.out.println("Errore nell'inserimento dell'esame: " + risposta.error.getDescription());
             }
@@ -101,9 +102,7 @@ import java.util.Scanner;
     }
 }*/
 
-import java.io.*;
 import java.net.Socket;
-import java.time.LocalDateTime;
 
 public class SegreteriaClient {
     private final String serverIp;

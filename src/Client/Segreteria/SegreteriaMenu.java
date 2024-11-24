@@ -1,3 +1,7 @@
+package Client.Segreteria;
+
+import Client.Esame;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Scanner;
@@ -14,7 +18,7 @@ public class SegreteriaMenu {
         int scelta;
 
         do {
-            System.out.println("Benvenuto nel gestionale dell'università");
+            System.out.println("\n\nBenvenuto nel gestionale dell'università");
             System.out.println("Seleziona cosa vuoi fare:");
             System.out.println("1) Aggiungi un nuovo esame");
             System.out.println("2) Elimina un esame");
@@ -74,7 +78,7 @@ public class SegreteriaMenu {
             descrizione = "Nessuna descrizione";
         }
 
-        // Crea l'oggetto Esame
+        // Crea l'oggetto Client.Esame
         Esame esame = new Esame(attivitaDidattica, dataAppello, descrizione, nomeProfessore, codiceEsame, numeroMassimoPrenotati);
 
         // Invia l'esame al client

@@ -1,3 +1,7 @@
+package Server;
+
+import Pacchetto.*;
+
 import java.io.*;
 import java.net.*;
 
@@ -8,11 +12,11 @@ public class SegreteriaServer {
 
     public static void main(String[] args) {
         try (ServerSocket serverSocket = new ServerSocket(SEGRETERIA_SERVER_PORT)) {
-            System.out.println("Segreteria Server is running on port " + SEGRETERIA_SERVER_PORT);
+            System.out.println(" Il Server della Segreteria e' in ascolto sulla porta " + SEGRETERIA_SERVER_PORT);
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("New client connected to Segreteria Server");
+                System.out.println("Nuovo Client Connesso");
                 new Thread(new SegreteriaClientHandler(clientSocket)).start();
             }
         } catch (IOException e) {
@@ -89,7 +93,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("GENERIC", "Login", "Errore durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("GENERIC", "Login", "Errore durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         } catch (IOException e) {
             System.err.println("Errore nella comunicazione con il Server Universitario.");
@@ -97,7 +101,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("NETWORK_ERROR", "Login", "Errore di rete durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("NETWORK_ERROR", "Login", "Errore di rete durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         }
     }
@@ -128,7 +132,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("GENERIC", "PrenotaEsame", "Errore durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("GENERIC", "PrenotaEsame", "Errore durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         } catch (IOException e) {
             System.err.println("Errore nella comunicazione con il Server Universitario.");
@@ -136,7 +140,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("NETWORK_ERROR", "PrenotaEsame", "Errore di rete durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("NETWORK_ERROR", "PrenotaEsame", "Errore di rete durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         }
     }
@@ -167,7 +171,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("GENERIC", "Inserisci Esame", "Errore durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("GENERIC", "Inserisci Esame", "Errore durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         } catch (IOException e) {
             System.err.println("Errore nella comunicazione con il Server Universitario.");
@@ -175,7 +179,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("NETWORK_ERROR", "Inserisci Esame", "Errore di rete durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("NETWORK_ERROR", "Inserisci Esame", "Errore di rete durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         }
     }
@@ -208,7 +212,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("GENERIC", "Visualizza Esami", "Errore durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("GENERIC", "Visualizza Esami", "Errore durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         } catch (IOException e) {
             System.err.println("Errore nella comunicazione con il Server Universitario.");
@@ -216,7 +220,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("NETWORK_ERROR", "Visualizza Esami", "Errore di rete durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("NETWORK_ERROR", "Visualizza Esami", "Errore di rete durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         }
     }
@@ -248,7 +252,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("GENERIC", "Visualizza Esami", "Errore durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("GENERIC", "Visualizza Esami", "Errore durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         } catch (IOException e) {
             System.err.println("Errore nella comunicazione con il Server Universitario.");
@@ -256,7 +260,7 @@ class SegreteriaClientHandler implements Runnable {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new Error("NETWORK_ERROR", "Visualizza Esami", "Errore di rete durante l'inoltro della richiesta.");
+            errorPacket.error = new CustomError("NETWORK_ERROR", "Visualizza Esami", "Errore di rete durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         }
     }
@@ -266,7 +270,7 @@ class SegreteriaClientHandler implements Runnable {
 
     private void sendError(String message, ObjectOutputStream output) throws IOException {
         Packet errorPacket = new Packet();
-        errorPacket.error = new Error("GENERIC", "Bad request", message);
+        errorPacket.error = new CustomError("GENERIC", "Bad request", message);
         output.writeObject(errorPacket);
     }
 }

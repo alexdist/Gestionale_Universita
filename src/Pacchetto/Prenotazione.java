@@ -1,3 +1,5 @@
+package Pacchetto;
+
 import java.io.Serializable;
 
 public class Prenotazione implements Serializable {
