@@ -1,4 +1,4 @@
-package Server;
+package Server.ServerUniversita;
 
 import Client.Esame;
 import Client.Studente.IStudente;
@@ -7,59 +7,12 @@ import Pacchetto.CustomError;
 import Pacchetto.Packet;
 import Pacchetto.Prenotazione;
 
-import java.io.*;
-//import java.lang.Pacchetto.Error;
-import java.net.*;
-import java.util.*;
-
-
-public class UniversityServer {
-
-    public static void main(String[] args) {
-        UniversityServer server = UniversityServer.getInstance();
-        server.startServer();
-    }
-    public static final int UNI_SERVER_PORT = 12345;
-
-    // Istanza unica del Server (inizializzata solo quando necessario)
-    private static UniversityServer instance;
-
-    private final List<Esame> esamiList = new ArrayList<>(); // Risorsa condivisa
-
-
-    private UniversityServer() {
-        // Costruttore privato per impedire istanze multiple
-        System.out.println("Server Universitario Avviato!");
-    }
-
-    public static synchronized UniversityServer getInstance() {
-        if (instance == null) {
-            instance = new UniversityServer(); // Crea l'istanza solo la prima volta
-        }
-        return instance;
-    }
-
-
-    public List<Esame> getEsamiList() {
-        return esamiList;
-    }
-
-    public void startServer() {
-        try (ServerSocket serverSocket = new ServerSocket(UNI_SERVER_PORT)) {
-            System.out.println("Il Server Universitario è in ascolto sulla porta " + UNI_SERVER_PORT);
-
-            while (true) {
-                Socket clientSocket = serverSocket.accept();
-                System.out.println("Nuovo Client connesso");
-                new Thread(new ClientHandler(clientSocket)).start();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-}
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 class ClientHandler implements Runnable {
     private Socket clientSocket;
@@ -234,7 +187,7 @@ class ClientHandler implements Runnable {
         }
 
         Packet response = new Packet();
-       // response.request = "ELIMINA_ESAME";
+        // response.request = "ELIMINA_ESAME";
 
         if (esameTrovato == null) {
             // Client.Esame non trovato
@@ -302,4 +255,3 @@ class ClientHandler implements Runnable {
         output.writeObject(errorPacket);
     }
 }
-
