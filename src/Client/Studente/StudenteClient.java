@@ -161,7 +161,7 @@ public class StudenteClient {
             System.out.println("Autenticazione riuscita per lo studente.");
             return true;
         } else {
-            System.out.println("Errore nell'autenticazione: " + risposta.error.getDescription());
+            System.err.println("Errore nell'autenticazione: " + risposta.error.getDescription());
             return false;
         }
     }
@@ -177,7 +177,7 @@ public class StudenteClient {
                 int numeroProgressivo = (int) risposta.data;
                 System.out.println("Prenotazione effettuata con successo! Numero progressivo prenotazione: " + numeroProgressivo);
             } else {
-                System.out.println("Errore nella prenotazione: " + risposta.error.getDescription());
+                System.err.println("Errore nella prenotazione: " + risposta.error.getDescription());
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Errore durante la prenotazione: " + e.getMessage());
@@ -232,6 +232,10 @@ public class StudenteClient {
                 throw new IOException("Errore dal server: " + risposta.error.getDescription());
             }
         }
+    }
+
+    public IStudente getStudente() {
+        return studente;
     }
 }
 
