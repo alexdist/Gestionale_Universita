@@ -64,7 +64,7 @@ public class MenuStudente {
         }
 
         while (true) {
-            System.out.println("\n\nBenvenuto nel gestionale dell'università!");
+            System.out.println("\n\nBenvenuto " + client.getStudente().getNome() +" " +client.getStudente().getCognome()+" nel gestionale dell'università!");
             System.out.println("1) Visualizza gli esami disponibili");
             System.out.println("2) Visualizza gli esami disponibili per uno specifico Corso");
             System.out.println("3) Prenota un Esame");
