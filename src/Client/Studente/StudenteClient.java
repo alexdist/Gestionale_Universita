@@ -133,19 +133,19 @@ import java.util.List;
 
 public class StudenteClient {
 
-    private final String serverIp;
-    private final int serverPort;
+    private  String serverIp;
+    private  int serverPort;
     private IStudente studente;
 
-    public StudenteClient(String serverIp, int serverPort, IStudente studente) {
-        this.serverIp = serverIp;
-        this.serverPort = serverPort;
+   /* public StudenteClient(String serverIp, int serverPort, IStudente studente) {
+        this.serverIp = "127.0.0.1";
+        this.serverPort = 12345;
         this.studente = studente;
-    }
+    }*/
 
     public StudenteClient(String serverIp, int serverPort) {
-        this.serverIp = serverIp;
-        this.serverPort = serverPort;
+       this.serverIp = serverIp;
+       this.serverPort = serverPort;
     }
 
 
