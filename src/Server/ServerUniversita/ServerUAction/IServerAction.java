@@ -1,4 +1,4 @@
-package Server.ServerUniversita;
+package Server.ServerUniversita.ServerUAction;
 
 import Pacchetto.Packet;
 

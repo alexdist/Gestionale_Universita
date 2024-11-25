@@ -1,14 +1,15 @@
-package Server.ServerUniversita;
+package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
 import Pacchetto.CustomError;
 import Pacchetto.Packet;
+import Server.ServerUniversita.UniversityServer;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.List;
 
-public class EliminaEsameServerAction implements IServerAction{
+public class EliminaEsameServerAction implements IServerAction {
 
      public void execute(Packet packet, ObjectOutputStream output) throws IOException {
 

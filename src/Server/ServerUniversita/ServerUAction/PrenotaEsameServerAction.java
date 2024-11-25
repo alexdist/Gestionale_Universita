@@ -1,9 +1,10 @@
-package Server.ServerUniversita;
+package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
 import Pacchetto.CustomError;
 import Pacchetto.Packet;
 import Pacchetto.Prenotazione;
+import Server.ServerUniversita.UniversityServer;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

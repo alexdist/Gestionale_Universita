@@ -1,4 +1,4 @@
-package Server.ServerUniversita;
+package Server.ServerUniversita.ServerUAction;
 
 import Client.Studente.IStudente;
 import Client.Studente.StudenteUniversitario;
@@ -10,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoginServerAction implements IServerAction{
+public class LoginServerAction implements IServerAction {
     @Override
     public void execute(Packet packet, ObjectOutputStream output) throws IOException {
         System.out.println("Tentativo di login ricevuto.");

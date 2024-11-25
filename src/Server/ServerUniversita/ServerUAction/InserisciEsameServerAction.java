@@ -1,16 +1,16 @@
-package Server.ServerUniversita;
+package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
 import Pacchetto.CustomError;
 import Pacchetto.Packet;
+import Server.ServerUniversita.UniversityServer;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.util.List;
-import java.time.LocalDateTime;
-import java.time.LocalDate;
-public class InserisciEsameServerAction implements IServerAction{
+
+public class InserisciEsameServerAction implements IServerAction {
 
     /*public void execute(Packet packet, ObjectOutputStream output) throws IOException {
         UniversityServer server = UniversityServer.getInstance();
