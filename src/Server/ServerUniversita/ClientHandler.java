@@ -14,7 +14,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-class ClientHandler implements Runnable {
+/*class ClientHandler implements Runnable {
     private Socket clientSocket;
 
     public ClientHandler(Socket clientSocket) {
@@ -254,4 +254,53 @@ class ClientHandler implements Runnable {
         errorPacket.error = new CustomError("GENERIC", "Bad request", message);
         output.writeObject(errorPacket);
     }
+}*/
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class ClientHandler implements Runnable {
+    private Socket clientSocket;
+    private Map<String, IServerAction> actions;
+
+    public ClientHandler(Socket clientSocket) {
+        this.clientSocket = clientSocket;
+        initializeActions();
+    }
+
+    private void initializeActions() {
+        actions = new HashMap<>();
+        actions.put("LOGIN", new LoginServerAction());
+        actions.put("INSERISCI_ESAME", new InserisciEsameServerAction());
+        actions.put("PRENOTA_ESAME", new PrenotaEsameServerAction());
+        actions.put("VISUALIZZA_ESAME", new VisualizzaEsameServerAction());
+        actions.put("VISUALIZZA_ESAME_CORSO", new VisualizzaEsameCorsoServerAction());
+        actions.put("ELIMINA_ESAME", new EliminaEsameServerAction());
+    }
+
+    @Override
+    public void run() {
+        try (ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
+             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream())) {
+
+            Packet request = (Packet) input.readObject();
+            System.out.println("Received request: " + request.request);
+
+            IServerAction action = actions.get(request.request);
+            if (action != null) {
+                action.execute(request, output);
+            } else {
+                sendError("Invalid request", output);
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendError(String message, ObjectOutputStream output) throws IOException {
+        Packet errorPacket = new Packet();
+        errorPacket.error = new CustomError("GENERIC", "Bad request", message);
+        output.writeObject(errorPacket);
+    }
 }
+
