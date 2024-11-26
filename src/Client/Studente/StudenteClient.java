@@ -185,6 +185,25 @@ public class StudenteClient {
         }
     }
 
+    public List<Esame> visualizzaPrenotazioniStudente(int matricola) throws IOException, ClassNotFoundException {
+        Packet richiesta = new Packet();
+        richiesta.request = "VISUALIZZA_PRENOTAZIONI_STUDENTE";
+        richiesta.data = matricola; // Invia solo il numero di matricola
+
+        // Invia la richiesta generica e ottieni la risposta
+        Packet risposta = inviaRichiestaGenerica(richiesta);
+
+        if ("OK".equals(risposta.error.getCode())) {
+            // Restituisce la lista di esami dalla risposta
+            return (List<Esame>) risposta.data;
+        } else {
+            // Gestisce l'errore con un'eccezione
+            throw new IOException("Errore durante il recupero delle prenotazioni: " + risposta.error.getDescription());
+        }
+    }
+
+
+
     // Metodo per inviare richieste generiche al server
     private Packet inviaRichiestaGenerica(Packet richiesta) throws IOException, ClassNotFoundException {
         try (Socket clientSocket = new Socket(serverIp, serverPort);
