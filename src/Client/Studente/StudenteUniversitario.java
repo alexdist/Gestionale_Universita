@@ -31,7 +31,7 @@ public class StudenteUniversitario implements IStudente, Serializable {
         this.nome = nome;
         this.cognome = cognome;
         this.codiceFiscale = null;
-        this.matricola = 0;
+        this.matricola = matricola;
         this.email = null;
     }
 
