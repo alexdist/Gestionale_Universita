@@ -18,6 +18,7 @@ public class LoginServerAction implements IServerAction {
         IStudente studente = (StudenteUniversitario) packet.data;
         String nome = studente.getNome();
         String cognome = studente.getCognome();
+        int matricola = studente.getMatricola();
 
         List<String> databaseUtenti = new ArrayList<>();
         databaseUtenti.add("Mario Rossi");
@@ -28,10 +29,10 @@ public class LoginServerAction implements IServerAction {
 
         Packet response = new Packet();
         if (autenticato) {
-            System.out.println("Autenticazione riuscita per l'utente: " + cognome);
+            System.out.println("Autenticazione riuscita per l'utente: " + cognome +" " + nome + " matricola: "+ matricola);
             response.error = new CustomError("OK", "", "Autenticazione riuscita.");
         } else {
-            System.out.println("Autenticazione fallita per l'utente: " + cognome);
+            System.err.println("Autenticazione fallita per l'utente: " + cognome);
             response.error = new CustomError("AUTH_ERROR", "Login", "Credenziali non valide.");
         }
 
