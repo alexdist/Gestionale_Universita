@@ -12,49 +12,6 @@ import java.util.List;
 
 public class InserisciEsameServerAction implements IServerAction {
 
-    /*public void execute(Packet packet, ObjectOutputStream output) throws IOException {
-        UniversityServer server = UniversityServer.getInstance();
-        List<Esame> esamiList = server.getEsamiList();
-
-        Esame esame = (Esame) packet.data;
-        esamiList.add(esame);
-        System.out.println("Esame inserito: " + esame);
-
-        Packet response = new Packet();
-        response.error = new CustomError("OK", "", "Esame inserito correttamente.");
-        output.writeObject(response);
-    }*/
-   /* @Override
-    public void execute(Packet packet, ObjectOutputStream output) throws IOException {
-        UniversityServer server = UniversityServer.getInstance();
-        List<Esame> esamiList = server.getEsamiList();
-
-        Esame esame = (Esame) packet.data;
-        long codiceEsame = esame.getCodiceEsame();
-
-        // Controllo se il codice esame esiste già
-        boolean esameEsistente = esamiList.stream()
-                .anyMatch(e -> e.getCodiceEsame() == codiceEsame);
-
-        Packet response = new Packet();
-        if (esameEsistente) {
-            System.out.println("Errore: Esame con codice " + codiceEsame + " già presente nella lista.");
-            response.error = new CustomError("DUPLICATE", "InserisciEsame",
-                    "Un esame con questo codice esiste già.");
-        } else {
-            // Aggiunta del nuovo esame alla lista
-            esamiList.add(esame);
-            System.out.println("Esame inserito: " + esame);
-            response.error = new CustomError("OK", "", "Esame inserito correttamente.");
-        }
-
-        // Invio della risposta al client
-        output.writeObject(response);
-    }*/
-
-
-
-
 
         @Override
         public void execute(Packet packet, ObjectOutputStream output) throws IOException {
@@ -79,17 +36,18 @@ public class InserisciEsameServerAction implements IServerAction {
 
             Packet response = new Packet();
             if (esameEsistente) {
-                System.out.println("Errore: Esame con codice " + codiceEsame + " già presente nella lista.");
+                System.err.println("Errore: Esame con codice " + codiceEsame + " già presente nella lista.");
                 response.error = new CustomError("DUPLICATE", "InserisciEsame",
                         "Un esame con questo codice esiste già.");
             } else if (esameStessoGiorno && esameStessoNome) {
-                System.out.println("Errore: Un altro esame di " + esame.getAttivitaDidattica()+" è già programmato per il giorno " + dataEsame);
+                System.err.println("Errore: Un altro esame di " + esame.getAttivitaDidattica()+" è già programmato per il giorno " + dataEsame);
                 response.error = new CustomError("DATE_CONFLICT", "InserisciEsame",
                         "Errore: Un altro esame di " + esame.getAttivitaDidattica()+" è già programmato per il giorno " + dataEsame);
             } else {
                 // Aggiunta del nuovo esame alla lista
-                esamiList.add(esame);
-                System.out.println("Esame inserito: " + esame);
+               // esamiList.add(esame);
+                server.aggiungiEsame(esame);
+                System.out.println("Esame di " + esame.getAttivitaDidattica() + " con codice " + codiceEsame + " inserito con successo!");
                 response.error = new CustomError("OK", "", "Esame inserito correttamente.");
             }
 
