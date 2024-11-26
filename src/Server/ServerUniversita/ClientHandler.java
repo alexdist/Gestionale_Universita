@@ -2,6 +2,7 @@ package Server.ServerUniversita;
 
 import Pacchetto.CustomError;
 import Pacchetto.Packet;
+//import Server.Segreteria.Action.PrenotazioniStudenteAction;
 import Server.ServerUniversita.ServerUAction.*;
 
 import java.io.IOException;
@@ -271,6 +272,7 @@ public class ClientHandler implements Runnable {
         actions.put("VISUALIZZA_ESAME", new VisualizzaEsameServerAction());
         actions.put("VISUALIZZA_ESAME_CORSO", new VisualizzaEsameCorsoServerAction());
         actions.put("ELIMINA_ESAME", new EliminaEsameServerAction());
+        actions.put("VISUALIZZA_PRENOTAZIONI_STUDENTE", new PrenotazioniStudenteServerAction());
     }
 
     @Override
@@ -281,7 +283,10 @@ public class ClientHandler implements Runnable {
             Packet request = (Packet) input.readObject();
             System.out.println("Received request: " + request.request);
 
-            IServerAction action = actions.get(request.request);
+            IServerAction action = actions.get(request.request);//ad esempio se request.request è "LOGIN" verrà restituisce
+            // l'oggetto associato alla chiave "LOGIN", che in questo caso è un'istanza di LoginServerAction.
+            //Quindi nella variabile "action" ci sarà un istanza di quest'ultima, e facendo action.execute eseguiremo
+            //la funzione execute di LoginServerAction
             if (action != null) {
                 action.execute(request, output);
             } else {

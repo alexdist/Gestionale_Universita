@@ -278,6 +278,7 @@ public class SegreteriaClientHandler implements Runnable {
         actions.put("VISUALIZZA_ESAME", new VisualizzaEsameAction());
         actions.put("VISUALIZZA_ESAME_CORSO", new VisualizzaEsameCorsoAction());
         actions.put("PRENOTA_ESAME", new PrenotaEsameAction());
+        actions.put("VISUALIZZA_PRENOTAZIONI_STUDENTE", new PrenotazioniStudenteAction());
     }
 
     @Override
