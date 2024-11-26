@@ -68,6 +68,7 @@ public class MenuStudente {
             System.out.println("1) Visualizza gli esami disponibili");
             System.out.println("2) Visualizza gli esami disponibili per uno specifico Corso");
             System.out.println("3) Prenota un Esame");
+            System.out.println("4) Visualizza le prenotazioni");
             System.out.println("0) Esci");
             System.out.print("Scelta: ");
             int scelta = scanner.nextInt();
@@ -81,6 +82,10 @@ public class MenuStudente {
                     break;
                 case 3:
                     prenotaEsame();
+                    break;
+
+                case 4:
+                    visualizzaPrenotazioniStudente();
                     break;
                 case 0:
                     System.out.println("Uscita...");
@@ -101,6 +106,24 @@ public class MenuStudente {
         client.autenticaStudente(studente);
     }*/
 
+    private void visualizzaPrenotazioniStudente() {
+        try {
+            // Estrazione della matricola dallo studente
+            int matricola = client.getStudente().getMatricola();
+
+            // Chiamata al metodo per ottenere la lista di esami prenotati
+            List<Esame> esamiPrenotati = client.visualizzaPrenotazioniStudente(matricola);
+
+            // Stampa la lista di esami usando il metodo printEsami
+            printEsami(esamiPrenotati);
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Errore durante il recupero delle prenotazioni: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
     private void effettuaLogin() throws IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
@@ -111,7 +134,11 @@ public class MenuStudente {
             System.out.print("Cognome: ");
             String cognome = scanner.nextLine();
 
-            IStudente studente = new StudenteUniversitario(nome, cognome);
+            System.out.print("Matricola: ");
+            int matricola = scanner.nextInt();
+
+
+            IStudente studente = new StudenteUniversitario(nome, cognome, matricola);
 
             if (client.autenticaStudente(studente)) {
                 System.out.println("Login avvenuto con successo!");
@@ -165,7 +192,7 @@ public class MenuStudente {
             return;
         }
 
-        System.out.println("Esami disponibili:");
+        System.out.println("\nEsami disponibili:\n");
         for (Esame esame : esami) {
             System.out.println("Codice esame: " + esame.getCodiceEsame());
             System.out.println("Attività Didattica: " + esame.getAttivitaDidattica());
