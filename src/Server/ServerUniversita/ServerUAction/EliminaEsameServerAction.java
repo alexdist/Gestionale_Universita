@@ -31,20 +31,20 @@ public class EliminaEsameServerAction implements IServerAction {
 
          if (esameTrovato == null) {
              // Client.Esame non trovato
-             System.err.println("Esame con codice " + codiceEsame + " non trovato.");
-             response.error = new CustomError("NOT_FOUND", "EliminaEsame", "Esame non trovato.");
+             System.err.println("Appello con codice " + codiceEsame + " non trovato.");
+             response.error = new CustomError("NOT_FOUND", "EliminaEsame", "Appello non trovato.");
              response.data = null;
          }else if (esameTrovato.getNumeroPrenotazione() >= 1){
-             System.err.println("Esame con codice " + codiceEsame + " non puo' essere eliminato poiché ci sono studenti prenotati.");
-             response.error = new CustomError("NOT_DELETE", "EliminaEsame", "Esame non puo essere eliminato con studenti prenotati.");
+             System.err.println("Appello con codice " + codiceEsame + " non puo' essere eliminato poiché ci sono studenti prenotati.");
+             response.error = new CustomError("NOT_DELETE", "EliminaEsame", "Appello non puo essere eliminato con studenti prenotati.");
          }
 
              else {
              // Esame trovato e rimosso
              //esamiList.remove(esameTrovato);
              server.rimuoviEsame(esameTrovato);
-             System.out.println("Esame di " + esameTrovato.getAttivitaDidattica() + " con codice " + codiceEsame + " eliminato con successo!");
-             response.error = new CustomError("OK", "", "Esame eliminato con successo.");
+             System.out.println("Appello di " + esameTrovato.getAttivitaDidattica() + " con codice " + codiceEsame + " eliminato con successo!");
+             response.error = new CustomError("OK", "", "Appello eliminato con successo.");
              response.data = null;
          }
 
