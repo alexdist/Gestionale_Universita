@@ -49,8 +49,8 @@ public class PrenotazioniStudenteServerAction implements IServerAction {
                 response.data = esamiPrenotati; // Restituisce la lista di Esame
             } else {
                 // Caso improbabile in cui i codici non corrispondono ad esami
-                System.err.println("Errore: Nessun esame valido trovato per i codici associati allo studente " + matricola);
-                response.error = new CustomError("NOT_FOUND", "Prenotazioni", "Esami associati non trovati.");
+                System.err.println("Errore: Nessun appello valido trovato per i codici associati allo studente " + matricola);
+                response.error = new CustomError("NOT_FOUND", "Prenotazioni", "Appelli associati non trovati.");
                 response.data = null;
             }
         } else {
