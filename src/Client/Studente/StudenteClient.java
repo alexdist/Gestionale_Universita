@@ -5,6 +5,7 @@ import Pacchetto.Packet;
 import Pacchetto.Prenotazione;
 import java.io.*;
 import java.net.*;
+import java.util.Collections;
 import java.util.List;
 
 public class StudenteClient {
@@ -25,16 +26,22 @@ public class StudenteClient {
         richiesta.request = "LOGIN";
         richiesta.data = this.studente;
 
-        Packet risposta = inviaRichiestaGenerica(richiesta);
+        try {
+            Packet risposta = inviaRichiestaGenerica(richiesta);
 
-        if ("OK".equals(risposta.error.getCode())) {
-            System.out.println("Autenticazione riuscita per lo studente.");
-            return true;
-        } else {
-            System.err.println("Errore nell'autenticazione: " + risposta.error.getDescription());
+            if ("OK".equals(risposta.error.getCode())) {
+                System.out.println("Autenticazione riuscita per lo studente.");
+                return true;
+            } else {
+                System.err.println("Errore nell'autenticazione: " + risposta.error.getDescription());
+                return false;
+            }
+        } catch (ConnectException e) {
+            System.err.println("Ops sembra che non c'è alcuna connessione al server. Verifica che il server sia attivo.");
             return false;
         }
     }
+
 
     public void prenotaAppello(long codiceEsame) throws IOException, ClassNotFoundException {
         Packet richiesta = new Packet();
@@ -49,29 +56,48 @@ public class StudenteClient {
             } else {
                 System.err.println("Errore nella prenotazione: " + risposta.error.getDescription());
             }
+        } catch (ConnectException e) {
+            System.err.println("Ops sembra che non c'è alcuna connessione al server. Verifica che il server sia attivo.");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Errore durante la prenotazione: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public List<Esame> visualizzaPrenotazioniStudente(int matricola) throws IOException, ClassNotFoundException {
+    public List<Esame> visualizzaPrenotazioniStudente(int matricola) {
         Packet richiesta = new Packet();
         richiesta.request = "VISUALIZZA_PRENOTAZIONI_STUDENTE";
         richiesta.data = matricola; // Invia solo il numero di matricola
 
-        // Invia la richiesta generica e ottieni la risposta
-        Packet risposta = inviaRichiestaGenerica(richiesta);
+        try {
+            // Invia la richiesta generica e ottieni la risposta
+            Packet risposta = inviaRichiestaGenerica(richiesta);
 
-        if ("OK".equals(risposta.error.getCode())) {
-            // Restituisce la lista di esami dalla risposta
-            return (List<Esame>) risposta.data;
-        } else {
-            // Gestisce l'errore con un'eccezione
-            throw new IOException("Errore durante il recupero delle prenotazioni: " + risposta.error.getDescription());
+            if ("OK".equals(risposta.error.getCode())) {
+                // Restituisce la lista di esami dalla risposta
+                return (List<Esame>) risposta.data;
+            } else if ("NOT_FOUND".equals(risposta.error.getCode())) {
+                // Gestisce il caso in cui non ci sono prenotazioni
+                System.out.println("Non ci sono prenotazioni per la matricola: " + matricola);
+                return Collections.emptyList(); // Restituisce una lista vuota
+            } else {
+                // Gestisce errori generici del server
+                System.err.println("Errore dal server: " + risposta.error.getDescription());
+                return Collections.emptyList();
+            }
+        } catch (ConnectException e) {
+            System.err.println("Ops, sembra che non c'è alcuna connessione al server. Verifica che il server sia attivo.");
+            return Collections.emptyList(); // Restituisce una lista vuota in caso di errore di connessione
+        } catch (ClassNotFoundException e) {
+            System.err.println("Errore durante la lettura della risposta: " + e.getMessage());
+            e.printStackTrace();
+            return Collections.emptyList();
+        } catch (IOException e) {
+            System.err.println("Errore durante il recupero delle prenotazioni: " + e.getMessage());
+            e.printStackTrace();
+            return Collections.emptyList();
         }
     }
-
 
 
     // Metodo per inviare richieste generiche al server
@@ -82,12 +108,14 @@ public class StudenteClient {
 
             // Invia il pacchetto al server
             output.writeObject(richiesta);
-
             // Riceve la risposta dal server
             return (Packet) input.readObject();
+
+        } catch (ConnectException e) {
+            //System.err.println("Ops sembra che non c'è alcuna connessione al server. Verifica che il server sia attivo.");
+            throw e; // Rilancia l'eccezione per la gestione a livello superiore
         }
     }
-
 
 
     public List<Esame> visualizzaEsami() throws IOException, ClassNotFoundException {
@@ -120,8 +148,12 @@ public class StudenteClient {
             } else {
                 throw new IOException("Errore dal server: " + risposta.error.getDescription());
             }
+        } catch (ConnectException e) {
+            System.err.println("Ops sembra che non c'è alcuna connessione al server. Verifica che il server sia attivo.");
+            return Collections.emptyList(); // Restituisce una lista vuota in caso di errore
         }
     }
+
 
     public IStudente getStudente() {
         return studente;
