@@ -15,7 +15,7 @@ public class VisualizzaEsameServerAction implements IServerAction {
 
         Packet response = new Packet();
         response.data = esamiList;
-        response.error = new CustomError("OK", "", "Esami visualizzati correttamente.");
+        response.error = new CustomError("OK", "", "Appelli visualizzati correttamente.");
         output.writeObject(response);
     }
 }

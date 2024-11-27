@@ -31,10 +31,10 @@ public class VisualizzaEsameCorsoServerAction implements IServerAction {
         Packet response = new Packet();
         if (!esamiFiltrati.isEmpty()) {
             response.data = esamiFiltrati;
-            response.error = new CustomError("OK", "", "Esami del corso '" + corso + "' visualizzati correttamente.");
+            response.error = new CustomError("OK", "", "Appelli del corso '" + corso + "' visualizzati correttamente.");
         } else {
             response.data = null;
-            response.error = new CustomError("EMPTY", "Visualizza Esami", "Nessun esame trovato per il corso '" + corso + "'.");
+            response.error = new CustomError("EMPTY", "Visualizza Esami", "Nessun appello trovato per il corso '" + corso + "'.");
         }
 
         // Invia la risposta al client

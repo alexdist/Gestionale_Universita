@@ -34,8 +34,8 @@ public class PrenotaEsameServerAction implements IServerAction {
         Packet response = new Packet();
         if (esameTrovato == null) {
             // Esame non trovato
-            System.err.println("Esame con codice " + codiceEsame + " non trovato.");
-            response.error = new CustomError("NOT_FOUND", "Prenotazione", "Esame non trovato.");
+            System.err.println("Appello con codice " + codiceEsame + " non trovato.");
+            response.error = new CustomError("NOT_FOUND", "Prenotazione", "Appello non trovato.");
             response.data = null;
         } else if (esameTrovato.getNumeroPrenotazione() < esameTrovato.getNumeroMassimoPrenotati()) {
             // Esame disponibile, tenta la prenotazione
@@ -44,13 +44,13 @@ public class PrenotaEsameServerAction implements IServerAction {
             if (prenotazioneEffettuata) {
                 esameTrovato.incrementaNumeroPrenotazione();
                 int numeroPrenotazione = esameTrovato.getNumeroPrenotazione();
-                System.out.println("Studente con matricola " + matricola + " prenotato con successo per l'esame con codice " + codiceEsame + "di " + esameTrovato.getAttivitaDidattica());
+                System.out.println("Studente con matricola " + matricola + " prenotato con successo per l'appello con codice " + codiceEsame + "di " + esameTrovato.getAttivitaDidattica());
                 response.error = new CustomError("OK", "", "Prenotazione effettuata con successo.");
                 response.data = numeroPrenotazione;
             } else {
                 // Studente già iscritto a questo esame
-                System.err.println("Studente con matricola " + matricola + " già iscritto all'esame con codice " + codiceEsame);
-                response.error = new CustomError("ALREADY_REGISTERED", "Prenotazione", "Studente già iscritto all'esame.");
+                System.err.println("Studente con matricola " + matricola + " già iscritto all'appello con codice " + codiceEsame);
+                response.error = new CustomError("ALREADY_REGISTERED", "Prenotazione", "Studente già iscritto all'appello.");
                 response.data = null;
             }
         } else {
