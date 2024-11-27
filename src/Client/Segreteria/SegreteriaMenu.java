@@ -18,12 +18,12 @@ public class SegreteriaMenu {
         int scelta;
 
         do {
-            System.out.println("\n\nBenvenuto nel gestionale dell'università");
+            System.out.println("\nBenvenuto nel gestionale dell'università");
             System.out.println("Seleziona cosa vuoi fare:");
             System.out.println("1) Aggiungi un nuovo esame");
             System.out.println("2) Elimina un esame");
-
             System.out.println("0) Esci");
+            System.out.print("Scelta: ");
 
             scelta = scanner.nextInt();
             scanner.nextLine(); // Pulizia del buffer
@@ -49,15 +49,15 @@ public class SegreteriaMenu {
     }
 
     private void eliminaEsame(Scanner scanner) throws IOException {
-        System.out.println("Inserisci il codice dell'esame: ");
+        System.out.println("Inserisci il codice dell'esame (numero intero): ");
         long codice = scanner.nextLong();
         client.eliminaEsame(codice);
     }
 
     private void creaEsame(Scanner scanner) {
-        System.out.println("Inserisci il codice dell'esame:");
+        System.out.println("Inserisci il codice dell'esame (numero intero): ");
         long codiceEsame = scanner.nextLong();
-        System.out.println("Inserisci l'attività didattica:");
+        System.out.println("Inserisci l'attività didattica (Stringa):");
         scanner.nextLine(); // Pulizia buffer
         String attivitaDidattica = scanner.nextLine();
 
@@ -70,7 +70,7 @@ public class SegreteriaMenu {
         System.out.println("Inserisci il nome del Professore:");
         String nomeProfessore = scanner.nextLine();
 
-        System.out.println("Inserisci il numero massimo di prenotati:");
+        System.out.println("Inserisci il numero massimo di prenotati (numero intero):");
         int numeroMassimoPrenotati = scanner.nextInt();
         scanner.nextLine(); // Pulizia del buffer
 
