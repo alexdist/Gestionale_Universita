@@ -3,6 +3,7 @@ package Client.Segreteria;
 import Client.Esame;
 import Pacchetto.Packet;
 import java.io.*;
+import java.net.ConnectException;
 import java.net.Socket;
 
 public class SegreteriaClient {
@@ -28,21 +29,24 @@ public class SegreteriaClient {
             // Riceve la risposta
             Packet risposta = (Packet) input.readObject();
             if ("OK".equals(risposta.error.getCode())) {
-                System.out.println("Esame inserito con successo.");
+                System.out.println("Appello inserito con successo.");
             } else {
-                System.out.println("Errore nell'inserimento dell'esame: " + risposta.error.getDescription());
+                System.err.println("Errore nell'inserimento dell'Appello: " + risposta.error.getDescription());
             }
 
+        } catch (ConnectException e) {
+            System.err.println("Ops sembra che non c'è alcuna connessione al server. Verifica che il server sia attivo.");
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Errore durante l'invio della richiesta: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
+
     public void eliminaEsame(long codiceEsame) throws IOException {
         try(Socket clientSocket2 = new Socket(serverIp, serverPort);
         ObjectOutputStream output = new ObjectOutputStream(clientSocket2.getOutputStream());
-        ObjectInputStream input = new ObjectInputStream(clientSocket2.getInputStream())){
+        ObjectInputStream input = new ObjectInputStream(clientSocket2.getInputStream())) {
 
             Packet richiesta = new Packet("ELIMINA_ESAME", Long.valueOf(codiceEsame), null);
 
@@ -50,12 +54,13 @@ public class SegreteriaClient {
 
             Packet risposta = (Packet) input.readObject();
             if ("OK".equals(risposta.error.getCode())) {
-                System.out.println("Esame eliminato con successo.");
+                System.out.println("Appello eliminato con successo.");
 
-            }else {
-                System.out.println("Errore nell'eliminazione dell'esame: " + risposta.error.getDescription());
+            } else {
+                System.err.println("Errore nell'eliminazione dell'appello: " + risposta.error.getDescription());
             }
-
+        }catch (ConnectException e) {
+            System.err.println("Ops sembra che non c'è alcuna connessione al server. Verifica che il server sia attivo.");
         }catch (IOException | ClassNotFoundException e) {
             System.err.println("Errore durante l'invio della richiesta: " + e.getMessage());
             e.printStackTrace();
