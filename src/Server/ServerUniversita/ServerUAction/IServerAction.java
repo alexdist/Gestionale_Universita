@@ -1,7 +1,6 @@
 package Server.ServerUniversita.ServerUAction;
 
 import Pacchetto.Packet;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 

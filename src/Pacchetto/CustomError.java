@@ -1,7 +1,5 @@
 package Pacchetto;
 
-
-
 import java.io.Serializable;
 
 public class CustomError implements Serializable {

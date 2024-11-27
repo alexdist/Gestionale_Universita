@@ -3,7 +3,6 @@ package Server.Segreteria.Action;
 import Pacchetto.CustomError;
 import Pacchetto.Packet;
 import Server.ServerUniversita.UniversityServer;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

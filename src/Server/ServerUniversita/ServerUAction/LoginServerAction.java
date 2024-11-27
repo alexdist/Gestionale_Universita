@@ -4,7 +4,6 @@ import Client.Studente.IStudente;
 import Client.Studente.StudenteUniversitario;
 import Pacchetto.CustomError;
 import Pacchetto.Packet;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;

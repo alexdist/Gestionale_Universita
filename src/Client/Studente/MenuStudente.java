@@ -16,44 +16,6 @@ public class MenuStudente {
         this.client = client;
     }
 
-
-    /*public void mostraMenu() throws IOException, ClassNotFoundException {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            System.out.println("Benvenuto nel gestionale dell'università!");
-            System.out.println("1) Visualizza gli esami disponibili");
-            System.out.println("2) Visualizza gli esami disponibili per uno specifico Corso");
-            System.out.println("3) Prenota un Client.Esame");
-            System.out.println("0) Esci");
-            System.out.print("Scelta: ");
-            int scelta = scanner.nextInt();
-
-            switch (scelta) {
-                case 1:
-                    visualizzaEsami();
-                    break;
-                case 2:
-                    visualizzaEsamiCorso();
-                    break;
-
-                    case 3:
-                    prenotaEsame();
-                    break;
-
-                case 4:
-                    effettuaLogin();
-                    break;
-
-                case 0:
-                    System.out.println("Uscita...");
-                    return;
-                default:
-                    System.out.println("Scelta non riconosciuta, riprova.");
-            }
-        }
-    }*/
-
     public void mostraMenu() throws IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
@@ -96,15 +58,6 @@ public class MenuStudente {
         }
     }
 
-   /* private void effettuaLogin() throws IOException, ClassNotFoundException {
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("Inserisci il nome: ");
-        String nome = scanner.nextLine();
-        System.out.print("Inserisci il cognome: ");
-        String cognome = scanner.nextLine();
-        Client.Studente.IStudente studente = new Client.Studente.StudenteUniversitario(nome, cognome);
-        client.autenticaStudente(studente);
-    }*/
 
     private void visualizzaPrenotazioniStudente() {
         try {
