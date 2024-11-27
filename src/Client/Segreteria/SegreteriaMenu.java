@@ -3,7 +3,9 @@ package Client.Segreteria;
 import Client.Esame;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Scanner;
 
 public class SegreteriaMenu {
@@ -64,8 +66,14 @@ public class SegreteriaMenu {
         System.out.println("Inserisci la descrizione (default: vuota):");
         String descrizione = scanner.nextLine();
 
-        System.out.println("Inserisci la data di appello (formato: yyyy-MM-ddTHH:mm):");
-        LocalDateTime dataAppello = LocalDateTime.parse(scanner.nextLine());
+        System.out.println("Inserisci la data (formato: yyyy-MM-dd):");
+        LocalDate data = LocalDate.parse(scanner.nextLine());
+
+        System.out.println("Inserisci l'orario (formato: HH:mm):");
+        LocalTime orario = LocalTime.parse(scanner.nextLine());
+
+        // Combina data e orario in LocalDateTime
+        LocalDateTime dataAppello = LocalDateTime.of(data, orario);
 
         System.out.println("Inserisci il nome del Professore:");
         String nomeProfessore = scanner.nextLine();
