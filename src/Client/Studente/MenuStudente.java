@@ -21,15 +21,15 @@ public class MenuStudente {
 
         // Esegui il login all'inizio
         while (!autenticato) {
-            System.out.println("Esegui il login per accedere al sistema.");
+            System.out.println("\nEsegui il login per accedere al sistema...\n");
             effettuaLogin();
         }
 
         while (true) {
             System.out.println("\n\nBenvenuto " + client.getStudente().getNome() +" " +client.getStudente().getCognome()+" nel gestionale dell'università!");
-            System.out.println("1) Visualizza gli esami disponibili");
-            System.out.println("2) Visualizza gli esami disponibili per uno specifico Corso");
-            System.out.println("3) Prenota un Esame");
+            System.out.println("1) Visualizza gli appelli disponibili");
+            System.out.println("2) Visualizza gli appelli disponibili per uno specifico Corso");
+            System.out.println("3) Prenota un Appello");
             System.out.println("4) Visualizza le prenotazioni");
             System.out.println("0) Esci");
             System.out.print("Scelta: ");
@@ -60,20 +60,15 @@ public class MenuStudente {
 
 
     private void visualizzaPrenotazioniStudente() {
-        try {
-            // Estrazione della matricola dallo studente
-            int matricola = client.getStudente().getMatricola();
+        // Estrazione della matricola dallo studente
+        int matricola = client.getStudente().getMatricola();
 
-            // Chiamata al metodo per ottenere la lista di esami prenotati
-            List<Esame> esamiPrenotati = client.visualizzaPrenotazioniStudente(matricola);
+        // Chiamata al metodo per ottenere la lista di esami prenotati
+        List<Esame> esamiPrenotati = client.visualizzaPrenotazioniStudente(matricola);
 
-            // Stampa la lista di esami usando il metodo printEsami
-            printEsami(esamiPrenotati);
+        // Stampa la lista di esami usando il metodo printEsami
+        printPrenotazioniEsami(esamiPrenotati);
 
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Errore durante il recupero delle prenotazioni: " + e.getMessage());
-            e.printStackTrace();
-        }
     }
 
 
@@ -81,7 +76,10 @@ public class MenuStudente {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
+
             System.out.println("Inserisci i dati per effettuare il login:");
+            //scanner.nextLine();
+            System.out.print("");
             System.out.print("Nome: ");
             String nome = scanner.nextLine();
             System.out.print("Cognome: ");
@@ -89,6 +87,7 @@ public class MenuStudente {
 
             System.out.print("Matricola: ");
             int matricola = scanner.nextInt();
+            scanner.nextLine();
 
 
             IStudente studente = new StudenteUniversitario(nome, cognome, matricola);
@@ -98,7 +97,8 @@ public class MenuStudente {
                 autenticato = true;
                 break;
             } else {
-                System.out.println("Login fallito. Riprova.");
+                System.out.println("Login fallito. Riprova.\n");
+
             }
         }
     }
@@ -109,7 +109,7 @@ public class MenuStudente {
             List<Esame> esami = client.visualizzaEsami();
             printEsami(esami);
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Errore durante il caricamento degli esami: " + e.getMessage());
+            System.err.println("Errore durante il caricamento degli appelli: " + e.getMessage());
         }
     }
 
@@ -122,32 +122,49 @@ public class MenuStudente {
             List<Esame> esami = client.visualizzaEsamiCorso(corso);
             printEsami(esami);
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Errore durante il caricamento degli esami per il corso: " + e.getMessage());
+            System.err.println("Errore durante il caricamento degli appelli per il corso: " + e.getMessage());
         }
     }
 
     private void prenotaEsame() throws IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Inserisci il codice dell'esame a cui vuoi prenotarti:");
+        System.out.println("Inserisci il codice dell'appello a cui vuoi prenotarti:");
         long codiceEsame = scanner.nextLong();
         try {
              client.prenotaAppello(codiceEsame);
             //printEsami(esami);
         } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Errore durante la prenotazione dell'esame " + e.getMessage());
+            System.err.println("Errore durante la prenotazione dell'appello " + e.getMessage());
         }
 
     }
 
     private void printEsami(List<Esame> esami) {
         if (esami == null || esami.isEmpty()) {
-            System.out.println("Nessun esame disponibile.");
+            System.out.println("Nessun appello disponibile.");
             return;
         }
 
-        System.out.println("\nEsami disponibili:\n");
+        System.out.println("\nAppelli disponibili:\n");
         for (Esame esame : esami) {
-            System.out.println("Codice esame: " + esame.getCodiceEsame());
+            System.out.println("Codice appello: " + esame.getCodiceEsame());
+            System.out.println("Attività Didattica: " + esame.getAttivitaDidattica());
+            System.out.println("Data: " + esame.getDataAppello());
+            System.out.println("Descrizione: " + esame.getDescrizione());
+            System.out.println("Presidente: " + esame.getPresidente());
+            System.out.println();
+        }
+    }
+
+    private void printPrenotazioniEsami(List<Esame> esami) {
+        if (esami == null || esami.isEmpty()) {
+            System.out.println("Nessuna prenotazione disponibile.");
+            return;
+        }
+
+        System.out.println("\nPrenotazioni:\n");
+        for (Esame esame : esami) {
+            System.out.println("Codice appello: " + esame.getCodiceEsame());
             System.out.println("Attività Didattica: " + esame.getAttivitaDidattica());
             System.out.println("Data: " + esame.getDataAppello());
             System.out.println("Descrizione: " + esame.getDescrizione());
