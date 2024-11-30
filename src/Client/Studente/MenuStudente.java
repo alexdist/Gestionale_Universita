@@ -10,8 +10,9 @@ public class MenuStudente {
 
     private final StudenteClient client;
 
-    private boolean autenticato = false; // Flag per il login
+    private boolean autenticato = false; // Flag per il login. indica se lo studente è autenticato
 
+    //inizializza il client per la comunicazion con il server
     public MenuStudente(StudenteClient client) {
         this.client = client;
     }
@@ -19,7 +20,7 @@ public class MenuStudente {
     public void mostraMenu() throws IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
-        // Esegui il login all'inizio
+        // Effettua il login dello studente prima di accedere al menu
         while (!autenticato) {
             System.out.println("\nEsegui il login per accedere al sistema...\n");
             effettuaLogin();
@@ -58,30 +59,18 @@ public class MenuStudente {
         }
     }
 
-
-    private void visualizzaPrenotazioniStudente() {
-        // Estrazione della matricola dallo studente
-        int matricola = client.getStudente().getMatricola();
-
-        // Chiamata al metodo per ottenere la lista di esami prenotati
-        List<Esame> esamiPrenotati = client.visualizzaPrenotazioniStudente(matricola);
-
-        // Stampa la lista di esami usando il metodo printEsami
-        printPrenotazioniEsami(esamiPrenotati);
-
-    }
-
-
+    //metodo per effettuare il login delo studente
     private void effettuaLogin() throws IOException, ClassNotFoundException {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
 
             System.out.println("Inserisci i dati per effettuare il login:");
-            //scanner.nextLine();
             System.out.print("");
+
             System.out.print("Nome: ");
             String nome = scanner.nextLine();
+
             System.out.print("Cognome: ");
             String cognome = scanner.nextLine();
 
@@ -89,10 +78,9 @@ public class MenuStudente {
             int matricola = scanner.nextInt();
             scanner.nextLine();
 
-
             IStudente studente = new StudenteUniversitario(nome, cognome, matricola);
 
-            if (client.autenticaStudente(studente)) {
+            if (client.autenticaStudente(studente)) { //verifica le credenziali dello studente
                 System.out.println("Login avvenuto con successo!");
                 autenticato = true;
                 break;
@@ -103,16 +91,17 @@ public class MenuStudente {
         }
     }
 
-
+    //metodo per visualizzare tutti gli appelli disponibili
     private void visualizzaEsami() {
         try {
-            List<Esame> esami = client.visualizzaEsami();
+            List<Esame> esami = client.visualizzaEsami(); //chiama il metodo visualizzaEsami che restituisce la lista
             printEsami(esami);
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Errore durante il caricamento degli appelli: " + e.getMessage());
         }
     }
 
+    //metodo per visualizzare gli appelli di una specifica attività didattica
     private void visualizzaEsamiCorso() {
         Scanner scanner = new Scanner(System.in);
         System.out.print("Inserisci il nome del corso: ");
@@ -131,11 +120,22 @@ public class MenuStudente {
         System.out.println("Inserisci il codice dell'appello a cui vuoi prenotarti:");
         long codiceEsame = scanner.nextLong();
         try {
-             client.prenotaAppello(codiceEsame);
+            client.prenotaAppello(codiceEsame);
             //printEsami(esami);
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Errore durante la prenotazione dell'appello " + e.getMessage());
         }
+    }
+
+    private void visualizzaPrenotazioniStudente() {
+        // Estrazione della matricola dallo studente
+        int matricola = client.getStudente().getMatricola();
+
+        // Chiamata al metodo per ottenere la lista di esami prenotati
+        List<Esame> esamiPrenotati = client.visualizzaPrenotazioniStudente(matricola);
+
+        // Stampa la lista di esami
+        printPrenotazioniEsami(esamiPrenotati);
 
     }
 

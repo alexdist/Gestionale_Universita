@@ -11,12 +11,13 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class SegreteriaMenu {
-    private final SegreteriaClient client;
+    private final SegreteriaClient client; //riferimento al client per poter comunicare con il server
 
     public SegreteriaMenu(SegreteriaClient client) {
         this.client = client;
     }
 
+    //metodo per avviare il menu
     public void avvia() throws IOException {
         Scanner scanner = new Scanner(System.in);
         int scelta;
@@ -30,7 +31,7 @@ public class SegreteriaMenu {
             System.out.print("Scelta: ");
 
             try {
-                scelta = scanner.nextInt();
+                scelta = scanner.nextInt(); //legge la scelta dell'utente
                 scanner.nextLine(); // Pulizia del buffer
                 System.out.println();
 
@@ -48,7 +49,7 @@ public class SegreteriaMenu {
                         System.out.println("Scelta non riconosciuta, riprova.");
                 }
                 System.out.println();
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException e) { //gestione degli errori di input
                 System.out.println("Errore: Inserisci un numero valido.");
                 scanner.nextLine(); // Pulisce l'input errato
                 scelta = -1; // Reset scelta per rimanere nel loop
@@ -58,6 +59,7 @@ public class SegreteriaMenu {
         scanner.close();
     }
 
+    //metodo per gestire l'eliminazione di un appello
     private void eliminaEsame(Scanner scanner) throws IOException {
         long codice = -1;
         while (codice < 0) {
@@ -69,18 +71,19 @@ public class SegreteriaMenu {
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Errore: Inserisci un numero intero valido.");
-                scanner.nextLine(); // Pulisce l'input errato
+                scanner.nextLine();
             }
         }
-        client.eliminaEsame(codice);
+        client.eliminaEsame(codice); //chiama il metodo eliminaEsame di SegreteriaClient e gli passa il codice
     }
 
+    //metodo per gestire l'aggiunta di un esame
     private void creaEsame(Scanner scanner) {
         try {
 
             long codiceEsame = -1;
 
-            while (codiceEsame < 0) {
+            while (codiceEsame < 0) { //cicla finché il codice esame non è valido
                 try {
                     System.out.println("Inserisci il codice dell'appello (numero intero): ");
                     codiceEsame = scanner.nextLong();
@@ -90,11 +93,11 @@ public class SegreteriaMenu {
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("Errore: Inserisci un numero intero valido.");
-                    scanner.nextLine(); // Pulizia del buffer per eliminare l'input errato
+                    scanner.nextLine();
                 }
             }
             String attivitaDidattica = null;
-            while (attivitaDidattica == null || attivitaDidattica.trim().isEmpty() || attivitaDidattica.matches("\\d+")) {
+            while (attivitaDidattica == null || attivitaDidattica.trim().isEmpty() || attivitaDidattica.matches("\\d+")) { //.trim rimuove gli spazi bianchi nella stringa. mentre.mathes(d+) serve per controllare che non siano inseriti SOLO numeri (numeri + testo va bene)
                 try {
                     System.out.println("Inserisci l'attività didattica (solo testo, non vuota):");
                     attivitaDidattica = scanner.nextLine().trim();
@@ -108,7 +111,7 @@ public class SegreteriaMenu {
                     }
                 } catch (InputMismatchException e) {
                     System.out.println("Errore: Inserisci una stringa valida.");
-                    scanner.nextLine(); // Pulizia del buffer in caso di errore
+                    scanner.nextLine();
                 }
             }
 
@@ -119,7 +122,7 @@ public class SegreteriaMenu {
             while (data == null) {
                 try {
                     System.out.println("Inserisci la data (formato: yyyy-MM-dd):");
-                    data = LocalDate.parse(scanner.nextLine());
+                    data = LocalDate.parse(scanner.nextLine()); //converte l'input in un oggetto LocalDate
                 } catch (DateTimeParseException e) {
                     System.out.println("Errore: Formato della data non valido. Usa il formato yyyy-MM-dd.");
                 }
@@ -160,7 +163,7 @@ public class SegreteriaMenu {
                 descrizione = "Nessuna descrizione";
             }
 
-            // Crea l'oggetto Client.Esame
+            // Crea l'oggetto Esame
             Esame esame = new Esame(attivitaDidattica, dataAppello, descrizione, nomeProfessore, codiceEsame, numeroMassimoPrenotati);
 
             // Invia l'esame al client
