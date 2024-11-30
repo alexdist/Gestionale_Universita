@@ -1,8 +1,10 @@
 package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
-import Pacchetto.CustomError;
+
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
+
 import Server.ServerUniversita.UniversityServer;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -31,10 +33,10 @@ public class VisualizzaEsameCorsoServerAction implements IServerAction {
         Packet response = new Packet();
         if (!esamiFiltrati.isEmpty()) {
             response.data = esamiFiltrati;
-            response.error = new CustomError("OK", "", "Appelli del corso '" + corso + "' visualizzati correttamente.");
+            response.info = new CustomInfo("OK", "VISUALIZZAESAMICORSO", "Appelli del corso '" + corso + "' visualizzati correttamente.");
         } else {
             response.data = null;
-            response.error = new CustomError("EMPTY", "Visualizza Esami", "Nessun appello trovato per il corso '" + corso + "'.");
+            response.info = new CustomInfo("EMPTY", "VISUALIZZAESAMICORSO", "Nessun appello trovato per il corso '" + corso + "'.");
         }
 
         // Invia la risposta al client

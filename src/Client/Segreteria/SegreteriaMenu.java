@@ -1,7 +1,6 @@
 package Client.Segreteria;
 
 import Client.Esame;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -80,7 +79,6 @@ public class SegreteriaMenu {
     //metodo per gestire l'aggiunta di un esame
     private void creaEsame(Scanner scanner) {
         try {
-
             long codiceEsame = -1;
 
             while (codiceEsame < 0) { //cicla finché il codice esame non è valido

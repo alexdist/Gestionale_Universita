@@ -1,6 +1,7 @@
 package Server.Segreteria;
 
-import Pacchetto.CustomError;
+//import Pacchetto.CustomError;
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
 import Server.Segreteria.Action.*;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class SegreteriaClientHandler implements Runnable {
 
     private void sendError(String message, ObjectOutputStream output) throws IOException {
         Packet errorPacket = new Packet();
-        errorPacket.error = new CustomError("GENERIC", "Bad request", message);
+        errorPacket.info = new CustomInfo("GENERIC", "Bad request", message);
         output.writeObject(errorPacket);
     }
 }

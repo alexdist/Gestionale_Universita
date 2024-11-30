@@ -1,8 +1,10 @@
 package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
-import Pacchetto.CustomError;
+//import Pacchetto.CustomError;
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
+//import Pacchetto.SuccessInfo;
 import Server.ServerUniversita.UniversityServer;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -15,7 +17,7 @@ public class VisualizzaEsameServerAction implements IServerAction {
 
         Packet response = new Packet();
         response.data = esamiList;
-        response.error = new CustomError("OK", "", "Appelli visualizzati correttamente.");
+        response.info = new CustomInfo("OK", "VISUALIZZAESAME", "Appelli visualizzati correttamente.");
         output.writeObject(response);
     }
 }

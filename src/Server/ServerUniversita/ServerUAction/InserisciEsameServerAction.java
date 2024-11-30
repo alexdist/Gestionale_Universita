@@ -1,7 +1,8 @@
 package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
-import Pacchetto.CustomError;
+//import Pacchetto.CustomError;
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
 import Server.ServerUniversita.UniversityServer;
 import java.io.IOException;
@@ -35,18 +36,18 @@ public class InserisciEsameServerAction implements IServerAction {
             Packet response = new Packet();
             if (esameEsistente) {
                 System.err.println("Errore: Appello con codice " + codiceEsame + " già presente nella lista.");
-                response.error = new CustomError("DUPLICATE", "InserisciEsame",
+                response.info = new CustomInfo("DUPLICATE", "INSERISCIESAME",
                         "Un appello con questo codice esiste già.");
             } else if (esameStessoGiorno && esameStessoNome) {
                 System.err.println("Errore: Un altro appello di " + esame.getAttivitaDidattica()+" è già programmato per il giorno " + dataEsame);
-                response.error = new CustomError("DATE_CONFLICT", "InserisciEsame",
+                response.info = new CustomInfo("DATE_CONFLICT", "INSERISCIESAME",
                         "Errore: Un altro appello di " + esame.getAttivitaDidattica()+" è già programmato per il giorno " + dataEsame);
             } else {
                 // Aggiunta del nuovo esame alla lista
                // esamiList.add(esame);
                 server.aggiungiEsame(esame);
                 System.out.println("Appello di " + esame.getAttivitaDidattica() + " con codice " + codiceEsame + " inserito con successo!");
-                response.error = new CustomError("OK", "", "Appello inserito correttamente.");
+                response.info = new CustomInfo("OK", "INSERISCIESAME", "Appello inserito correttamente.");
             }
 
             // Invio della risposta al client

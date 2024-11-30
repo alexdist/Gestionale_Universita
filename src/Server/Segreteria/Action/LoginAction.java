@@ -1,6 +1,7 @@
 package Server.Segreteria.Action;
 
-import Pacchetto.CustomError;
+//import Pacchetto.CustomError;
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
 import Server.ServerUniversita.UniversityServer;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class LoginAction implements ISegreteriaServerAction {
             uniOutput.writeObject(request);
 
             Packet response = (Packet) uniInput.readObject();
-            System.out.println("Risposta ricevuta dal Server Universitario: " + response.error);
+            System.out.println("Risposta ricevuta dal Server Universitario: " + response.info);
 
             output.writeObject(response);
             System.out.println("Risposta inviata al client.");
@@ -35,7 +36,7 @@ public class LoginAction implements ISegreteriaServerAction {
 
     private void handleError(ObjectOutputStream output, String errorCode, String context, String message) throws IOException {
         Packet errorPacket = new Packet();
-        errorPacket.error = new CustomError(errorCode, context, message);
+        errorPacket.info = new CustomInfo(errorCode, context, message);
         output.writeObject(errorPacket);
     }
 }

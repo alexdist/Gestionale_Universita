@@ -1,7 +1,8 @@
 package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
-import Pacchetto.CustomError;
+//import Pacchetto.CustomError;
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
 import Server.ServerUniversita.UniversityServer;
 import java.io.ObjectOutputStream;
@@ -45,18 +46,18 @@ public class PrenotazioniStudenteServerAction implements IServerAction {
             if (!esamiPrenotati.isEmpty()) {
                 // Prenotazioni trovate, prepara la risposta
                 System.out.println("Prenotazioni trovate per lo studente " + matricola + ": " + esamiPrenotati);
-                response.error = new CustomError("OK", "", "Prenotazioni trovate con successo.");
+                response.info = new CustomInfo("OK", "PRENOTAZIONI", "Prenotazioni trovate con successo.");
                 response.data = esamiPrenotati; // Restituisce la lista di Esame
             } else {
                 // Caso improbabile in cui i codici non corrispondono ad esami
                 System.err.println("Errore: Nessun appello valido trovato per i codici associati allo studente " + matricola);
-                response.error = new CustomError("NOT_FOUND", "Prenotazioni", "Appelli associati non trovati.");
+                response.info = new CustomInfo("NOT_FOUND", "PRENOTAZIONI", "Appelli associati non trovati.");
                 response.data = null;
             }
         } else {
             // Nessuna prenotazione trovata per la matricola
             System.err.println("Nessuna prenotazione trovata per lo studente con matricola " + matricola);
-            response.error = new CustomError("NOT_FOUND", "Prenotazioni", "Nessuna prenotazione trovata per questa matricola.");
+            response.info = new CustomInfo("NOT_FOUND", "PRENOTAZIONI", "Nessuna prenotazione trovata per questa matricola.");
             response.data = null;
         }
 

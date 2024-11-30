@@ -1,7 +1,8 @@
 package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
-import Pacchetto.CustomError;
+//import Pacchetto.CustomError;
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
 import Pacchetto.Prenotazione;
 import Server.ServerUniversita.UniversityServer;
@@ -35,7 +36,7 @@ public class PrenotaEsameServerAction implements IServerAction {
         if (esameTrovato == null) {
             // Esame non trovato
             System.err.println("Appello con codice " + codiceEsame + " non trovato.");
-            response.error = new CustomError("NOT_FOUND", "Prenotazione", "Appello non trovato.");
+            response.info = new CustomInfo("NOT_FOUND", "PRENOTA", "Appello non trovato.");
             response.data = null;
         } else if (esameTrovato.getNumeroPrenotazione() < esameTrovato.getNumeroMassimoPrenotati()) {
             // Esame disponibile, tenta la prenotazione
@@ -45,18 +46,18 @@ public class PrenotaEsameServerAction implements IServerAction {
                 esameTrovato.incrementaNumeroPrenotazione();
                 int numeroPrenotazione = esameTrovato.getNumeroPrenotazione();
                 System.out.println("Studente con matricola " + matricola + " prenotato con successo per l'appello con codice " + codiceEsame + "di " + esameTrovato.getAttivitaDidattica());
-                response.error = new CustomError("OK", "", "Prenotazione effettuata con successo.");
+                response.info = new CustomInfo("OK", "PRENOTA", "Prenotazione effettuata con successo.");
                 response.data = numeroPrenotazione;
             } else {
                 // Studente già iscritto a questo esame
                 System.err.println("Studente con matricola " + matricola + " già iscritto all'appello con codice " + codiceEsame);
-                response.error = new CustomError("ALREADY_REGISTERED", "Prenotazione", "Studente già iscritto all'appello.");
+                response.info = new CustomInfo("ALREADY_REGISTERED", "PRENOTA", "Studente già iscritto all'appello.");
                 response.data = null;
             }
         } else {
             // Esame pieno
             System.err.println("Esame " + codiceEsame + " pieno. Prenotazione non riuscita per studente con matricola " + matricola);
-            response.error = new CustomError("FULL", "Prenotazione", "Numero massimo di prenotati raggiunto.");
+            response.info = new CustomInfo("FULL", "PRENOTA", "Numero massimo di prenotati raggiunto.");
             response.data = null;
         }
 

@@ -1,6 +1,7 @@
 package Server.Segreteria.Action;
 
-import Pacchetto.CustomError;
+//import Pacchetto.CustomError;
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
 import Server.ServerUniversita.UniversityServer;
 import java.io.IOException;
@@ -24,7 +25,7 @@ public class VisualizzaEsameCorsoAction implements ISegreteriaServerAction {
 
             // Riceve la risposta dal server universitario
             Packet response = (Packet) uniInput.readObject();
-            System.out.println("Risposta ricevuta dal Server Universitario: " + response.error);
+            System.out.println("Risposta ricevuta dal Server Universitario: " + response.info);
 
             // Invia la risposta al client
             output.writeObject(response);
@@ -36,7 +37,7 @@ public class VisualizzaEsameCorsoAction implements ISegreteriaServerAction {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new CustomError("GENERIC", "Visualizza Esami", "Errore durante l'inoltro della richiesta.");
+            errorPacket.info = new CustomInfo("GENERIC", "Visualizza Esami", "Errore durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         } catch (IOException e) {
             System.err.println("Errore nella comunicazione con il Server Universitario.");
@@ -44,7 +45,7 @@ public class VisualizzaEsameCorsoAction implements ISegreteriaServerAction {
 
             // Invia un errore al client
             Packet errorPacket = new Packet();
-            errorPacket.error = new CustomError("NETWORK_ERROR", "Visualizza Esami", "Errore di rete durante l'inoltro della richiesta.");
+            errorPacket.info = new CustomInfo("NETWORK_ERROR", "Visualizza Esami", "Errore di rete durante l'inoltro della richiesta.");
             output.writeObject(errorPacket);
         }
 

@@ -1,7 +1,8 @@
 package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
-import Pacchetto.CustomError;
+//import Pacchetto.CustomError;
+import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
 import Server.ServerUniversita.UniversityServer;
 import java.io.IOException;
@@ -32,11 +33,11 @@ public class EliminaEsameServerAction implements IServerAction {
          if (esameTrovato == null) {
              // Client.Esame non trovato
              System.err.println("Appello con codice " + codiceEsame + " non trovato.");
-             response.error = new CustomError("NOT_FOUND", "EliminaEsame", "Appello non trovato.");
+             response.info = new CustomInfo("NOT_FOUND", "ELIMINAESAME", "Appello non trovato.");
              response.data = null;
          }else if (esameTrovato.getNumeroPrenotazione() >= 1){
              System.err.println("Appello con codice " + codiceEsame + " non puo' essere eliminato poiché ci sono studenti prenotati.");
-             response.error = new CustomError("NOT_DELETE", "EliminaEsame", "Appello non puo essere eliminato con studenti prenotati.");
+             response.info = new CustomInfo("NOT_DELETE", "ELIMINAESAME", "Appello non puo essere eliminato con studenti prenotati.");
          }
 
              else {
@@ -44,7 +45,7 @@ public class EliminaEsameServerAction implements IServerAction {
              //esamiList.remove(esameTrovato);
              server.rimuoviEsame(esameTrovato);
              System.out.println("Appello di " + esameTrovato.getAttivitaDidattica() + " con codice " + codiceEsame + " eliminato con successo!");
-             response.error = new CustomError("OK", "", "Appello eliminato con successo.");
+             response.info = new CustomInfo("OK", "ELIMINAESAME", "Appello eliminato con successo.");
              response.data = null;
          }
 

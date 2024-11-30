@@ -2,8 +2,8 @@ package Server.ServerUniversita.ServerUAction;
 
 import Client.Studente.IStudente;
 import Client.Studente.StudenteUniversitario;
-import Pacchetto.CustomError;
-import Pacchetto.Packet;
+import Pacchetto.*;
+
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -29,10 +29,11 @@ public class LoginServerAction implements IServerAction {
         Packet response = new Packet();
         if (autenticato) {
             System.out.println("Autenticazione riuscita per l'utente: " + cognome +" " + nome + " matricola: "+ matricola);
-            response.error = new CustomError("OK", "", "Autenticazione riuscita.");
+            //response.error = new CustomError("OK", "", "Autenticazione riuscita.");
+            response.info = new CustomInfo("OK", "LOGIN", "Autenticazione riuscita.");
         } else {
             System.err.println("Autenticazione fallita per l'utente: " + cognome);
-            response.error = new CustomError("AUTH_ERROR", "Login", "Credenziali non valide.");
+            response.info = new CustomInfo("AUTH_ERROR", "LOGIN", "Credenziali non valide.");
         }
 
         output.writeObject(response);
