@@ -18,6 +18,7 @@ public class VisualizzaEsameServerAction implements IServerAction {
         Packet response = new Packet();
         response.data = esamiList;
         response.info = new CustomInfo("OK", "VISUALIZZAESAME", "Appelli visualizzati correttamente.");
+
         output.writeObject(response);
     }
 }

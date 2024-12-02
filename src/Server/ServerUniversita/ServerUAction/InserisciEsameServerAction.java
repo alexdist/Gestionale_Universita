@@ -1,7 +1,6 @@
 package Server.ServerUniversita.ServerUAction;
 
 import Client.Esame;
-//import Pacchetto.CustomError;
 import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
 import Server.ServerUniversita.UniversityServer;
@@ -19,7 +18,7 @@ public class InserisciEsameServerAction implements IServerAction {
 
             Esame esame = (Esame) packet.data;
             long codiceEsame = esame.getCodiceEsame();
-            LocalDate dataEsame = esame.getDataAppello().toLocalDate(); // Estrai solo la data senza l'orario
+            LocalDate dataEsame = esame.getDataAppello().toLocalDate(); // Estrae solo la data senza l'orario
             String nomeEsame = esame.getAttivitaDidattica();
 
             // Controllo se il codice esame esiste già
@@ -38,18 +37,17 @@ public class InserisciEsameServerAction implements IServerAction {
                 System.err.println("Errore: Appello con codice " + codiceEsame + " già presente nella lista.");
                 response.info = new CustomInfo("DUPLICATE", "INSERISCIESAME",
                         "Un appello con questo codice esiste già.");
+
             } else if (esameStessoGiorno && esameStessoNome) {
                 System.err.println("Errore: Un altro appello di " + esame.getAttivitaDidattica()+" è già programmato per il giorno " + dataEsame);
                 response.info = new CustomInfo("DATE_CONFLICT", "INSERISCIESAME",
                         "Errore: Un altro appello di " + esame.getAttivitaDidattica()+" è già programmato per il giorno " + dataEsame);
+
             } else {
-                // Aggiunta del nuovo esame alla lista
-               // esamiList.add(esame);
                 server.aggiungiEsame(esame);
                 System.out.println("Appello di " + esame.getAttivitaDidattica() + " con codice " + codiceEsame + " inserito con successo!");
                 response.info = new CustomInfo("OK", "INSERISCIESAME", "Appello inserito correttamente.");
             }
-
             // Invio della risposta al client
             output.writeObject(response);
         }

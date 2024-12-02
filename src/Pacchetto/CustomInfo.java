@@ -3,9 +3,9 @@ package Pacchetto;
 import java.io.Serializable;
 
 public class CustomInfo implements Serializable {
-    private String code;        // Codice dell'errore (es. "OK", "GENERIC")
-    private String source;      // Origine dell'errore
-    private String description; // Descrizione dettagliata
+    private String code;        // Codice (es. "OK", "GENERIC")
+    private String source;      // Origine (es. "LOGIN", "PRENOTAZIONE")
+    private String description; // Descrizione (es. "Utente autenticato con successo)
 
     // Costruttore
     public CustomInfo(String code, String source, String description) {

@@ -1,7 +1,6 @@
 package Server.Segreteria.Action;
 
 import Pacchetto.Packet;
-
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 

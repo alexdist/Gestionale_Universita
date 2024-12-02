@@ -27,10 +27,11 @@ public class LoginServerAction implements IServerAction {
         boolean autenticato = databaseUtenti.contains(nome + " " + cognome);
 
         Packet response = new Packet();
+
         if (autenticato) {
             System.out.println("Autenticazione riuscita per l'utente: " + cognome +" " + nome + " matricola: "+ matricola);
-            //response.error = new CustomError("OK", "", "Autenticazione riuscita.");
             response.info = new CustomInfo("OK", "LOGIN", "Autenticazione riuscita.");
+
         } else {
             System.err.println("Autenticazione fallita per l'utente: " + cognome);
             response.info = new CustomInfo("AUTH_ERROR", "LOGIN", "Credenziali non valide.");

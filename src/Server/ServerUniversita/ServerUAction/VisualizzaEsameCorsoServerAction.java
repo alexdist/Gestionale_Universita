@@ -18,7 +18,7 @@ public class VisualizzaEsameCorsoServerAction implements IServerAction {
         UniversityServer server = UniversityServer.getInstance();
         List<Esame> esamiList = server.getEsamiList();
 
-        // Estrai il nome del corso dal pacchetto
+        // Estrae il nome del corso dal pacchetto
         String corso = (String) packet.data;
 
         // Filtra gli esami associati al corso
@@ -28,19 +28,18 @@ public class VisualizzaEsameCorsoServerAction implements IServerAction {
                 esamiFiltrati.add(esame);
             }
         }
-
         // Prepara il pacchetto di risposta
         Packet response = new Packet();
+
         if (!esamiFiltrati.isEmpty()) {
             response.data = esamiFiltrati;
             response.info = new CustomInfo("OK", "VISUALIZZAESAMICORSO", "Appelli del corso '" + corso + "' visualizzati correttamente.");
+
         } else {
             response.data = null;
             response.info = new CustomInfo("EMPTY", "VISUALIZZAESAMICORSO", "Nessun appello trovato per il corso '" + corso + "'.");
         }
-
         // Invia la risposta al client
         output.writeObject(response);
     }
-
 }

@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 public class Esame implements Serializable {
 
-    private static final long serialVersionUID = 1L; // Versione seriale consigliata
+    private static final long serialVersionUID = 1L; // Versione seriale
     private String attivitaDidattica;
     private LocalDateTime dataAppello;
     private String descrizione;

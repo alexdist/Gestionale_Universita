@@ -38,6 +38,7 @@ public class PrenotaEsameServerAction implements IServerAction {
             System.err.println("Appello con codice " + codiceEsame + " non trovato.");
             response.info = new CustomInfo("NOT_FOUND", "PRENOTA", "Appello non trovato.");
             response.data = null;
+
         } else if (esameTrovato.getNumeroPrenotazione() < esameTrovato.getNumeroMassimoPrenotati()) {
             // Esame disponibile, tenta la prenotazione
             boolean prenotazioneEffettuata = server.prenotaEsame(matricola, codiceEsame);
@@ -48,23 +49,22 @@ public class PrenotaEsameServerAction implements IServerAction {
                 System.out.println("Studente con matricola " + matricola + " prenotato con successo per l'appello con codice " + codiceEsame + "di " + esameTrovato.getAttivitaDidattica());
                 response.info = new CustomInfo("OK", "PRENOTA", "Prenotazione effettuata con successo.");
                 response.data = numeroPrenotazione;
+
             } else {
                 // Studente già iscritto a questo esame
                 System.err.println("Studente con matricola " + matricola + " già iscritto all'appello con codice " + codiceEsame);
                 response.info = new CustomInfo("ALREADY_REGISTERED", "PRENOTA", "Studente già iscritto all'appello.");
                 response.data = null;
             }
-        } else {
+                } else {
             // Esame pieno
             System.err.println("Esame " + codiceEsame + " pieno. Prenotazione non riuscita per studente con matricola " + matricola);
             response.info = new CustomInfo("FULL", "PRENOTA", "Numero massimo di prenotati raggiunto.");
             response.data = null;
         }
-
         // Invia la risposta al client
         output.writeObject(response);
     }
-
 }
 
 

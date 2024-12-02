@@ -60,7 +60,6 @@ public class PrenotazioniStudenteServerAction implements IServerAction {
             response.info = new CustomInfo("NOT_FOUND", "PRENOTAZIONI", "Nessuna prenotazione trovata per questa matricola.");
             response.data = null;
         }
-
         // Invia la risposta al client
         output.writeObject(response);
     }
