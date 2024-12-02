@@ -1,12 +1,12 @@
 package Server.Segreteria.Action;
 
-//import Pacchetto.CustomError;
-import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
+import Server.HandleError;
 import Server.ServerUniversita.UniversityServer;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.Socket;
 
 public class PrenotazioniStudenteAction implements ISegreteriaServerAction {
@@ -33,22 +33,22 @@ public class PrenotazioniStudenteAction implements ISegreteriaServerAction {
             output.writeObject(response);
             System.out.println("Risposta inviata al client.");
 
+        } catch (ConnectException e) {
+            // Gestisce il caso specifico in cui non è possibile connettersi al server universitario
+            System.err.println("Impossibile connettersi al Server Universitario: " + e.getMessage());
+            HandleError.handleError(output, "SERVER_UNREACHABLE", "Visualizza_Esami",
+                    "Impossibile connettersi al Server Universitario. Verifica che il server sia attivo.");
+
         } catch (ClassNotFoundException e) {
             System.err.println("Errore durante la lettura della risposta dal Server Universitario.");
             e.printStackTrace();
+            HandleError.handleError(output, "GENERIC", "Prenotazioni_Studente", "Errore durante l'inoltro della richiesta.");
 
-            // Invia un errore al client
-            Packet errorPacket = new Packet();
-            errorPacket.info = new CustomInfo("GENERIC", "Prenotazioni Studente", "Errore durante l'inoltro della richiesta.");
-            output.writeObject(errorPacket);
         } catch (IOException e) {
             System.err.println("Errore nella comunicazione con il Server Universitario.");
             e.printStackTrace();
 
-            // Invia un errore al client
-            Packet errorPacket = new Packet();
-            errorPacket.info = new CustomInfo("NETWORK_ERROR", "Prenotazioni Studente", "Errore di rete durante l'inoltro della richiesta.");
-            output.writeObject(errorPacket);
+            HandleError.handleError(output, "NETWORK_ERROR", "Prenotazioni_Studente", "Errore di rete durante l'inoltro della richiesta.");
         }
     }
 }

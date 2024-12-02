@@ -1,54 +1,50 @@
 package Server.Segreteria.Action;
 
-//import Pacchetto.CustomError;
-import Pacchetto.CustomInfo;
 import Pacchetto.Packet;
+import Server.HandleError;
 import Server.ServerUniversita.UniversityServer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 
+//intermediario che si occupa di inoltrare la richiesta di prenotazione di un esame al server universitario
 public class PrenotaEsameAction implements ISegreteriaServerAction {
 
     public void execute(Packet request, ObjectOutputStream output) throws IOException{
 
         try (
-                // Connessione al server universitario
+                //crea una connessione socket con il server universitario
                 Socket universitySocket = new Socket("127.0.0.1", UniversityServer.UNI_SERVER_PORT);
-                ObjectOutputStream uniOutput = new ObjectOutputStream(universitySocket.getOutputStream());
-                ObjectInputStream uniInput = new ObjectInputStream(universitySocket.getInputStream())
+                ObjectOutputStream uniOutput = new ObjectOutputStream(universitySocket.getOutputStream()); //stream invio datial server
+                ObjectInputStream uniInput = new ObjectInputStream(universitySocket.getInputStream()) //stream per ricevere dati dal server
         ) {
-            System.out.println("Inoltro richiesta di login al Server Universitario...");
+            System.out.println("Inoltro richiesta di prenotazione di un esame al Server Universitario...");
 
-            // Invia la richiesta di login al server universitario
-            uniOutput.writeObject(request);
+            uniOutput.writeObject(request); //inoltra richiesta del client al server universitario
 
-            // Riceve la risposta dal server universitario
-            Packet response = (Packet) uniInput.readObject();
+            Packet response = (Packet) uniInput.readObject();// Riceve la risposta dal server universitario
             System.out.println("Risposta ricevuta dal Server Universitario: " + response.info);
 
-            // Invia la risposta al client
-            output.writeObject(response);
+            output.writeObject(response); // Invia la risposta al client
             System.out.println("Risposta inviata al client.");
+
+        } catch (ConnectException e) {
+            // Gestisce il caso specifico in cui non è possibile connettersi al server universitario
+            System.err.println("Impossibile connettersi al Server Universitario: " + e.getMessage());
+            HandleError.handleError(output, "SERVER_UNREACHABLE", "Visualizza_Esami",
+                    "Impossibile connettersi al Server Universitario. Verifica che il server sia attivo.");
 
         } catch (ClassNotFoundException e) {
             System.err.println("Errore durante la lettura della risposta dal Server Universitario.");
             e.printStackTrace();
+            HandleError.handleError(output, "GENERIC", "PrenotaEsame", "Errore durante l'inoltro della richiesta.");
 
-            // Invia un errore al client
-            Packet errorPacket = new Packet();
-            errorPacket.info = new CustomInfo("GENERIC", "PrenotaEsame", "Errore durante l'inoltro della richiesta.");
-            output.writeObject(errorPacket);
         } catch (IOException e) {
             System.err.println("Errore nella comunicazione con il Server Universitario.");
             e.printStackTrace();
-
-            // Invia un errore al client
-            Packet errorPacket = new Packet();
-            errorPacket.info = new CustomInfo("NETWORK_ERROR", "PrenotaEsame", "Errore di rete durante l'inoltro della richiesta.");
-            output.writeObject(errorPacket);
+            HandleError.handleError(output, "NETWORK_ERROR", "PrenotaEsame", "Errore di rete durante l'inoltro della richiesta.");
         }
-
     }
 }
