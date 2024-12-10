@@ -24,7 +24,6 @@ public class SegreteriaClientHandler implements Runnable {
     private void initializeActions() {
         actions = new HashMap<>();
         actions.put("LOGIN", new LoginAction());
-        //actions.put("INSERISCI_ESAME", new InserisciEsameAction());
         actions.put("VISUALIZZA_ESAME", new VisualizzaEsameAction());
         actions.put("VISUALIZZA_ESAME_CORSO", new VisualizzaEsameCorsoAction());
         actions.put("PRENOTA_ESAME", new PrenotaEsameAction());
