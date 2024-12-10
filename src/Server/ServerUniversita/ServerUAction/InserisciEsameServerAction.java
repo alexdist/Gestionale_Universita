@@ -13,6 +13,7 @@ public class InserisciEsameServerAction implements IServerAction {
 
     @Override
         public void execute(Packet packet, ObjectOutputStream output) throws IOException {
+
             UniversityServer server = UniversityServer.getInstance();
             List<Esame> esamiList = server.getEsamiList();
 

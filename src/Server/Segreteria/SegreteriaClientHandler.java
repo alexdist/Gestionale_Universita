@@ -37,13 +37,13 @@ public class SegreteriaClientHandler implements Runnable {
              ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream())) {
 
             Packet request = (Packet) input.readObject();
-            System.out.println("Received request: " + request.request);
+            System.out.println("Richiesta ricevuta: " + request.request);
 
             ISegreteriaServerAction action = actions.get(request.request);
             if (action != null) {
                 action.execute(request, output);
             } else {
-                sendError("Invalid request", output);
+                sendError("Richiesta non valida", output);
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
