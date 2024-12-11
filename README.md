@@ -70,7 +70,9 @@ Ogni componente deve essere compilato ed eseguito in un terminale separato. Segu
    javac UniversityServer.java
 
 2. Esegui:
+   ```bash
    java UniversityServer
+   ```
 
 ### **Terminale 2: SegreteriaServer**
 1. Compila:
@@ -78,24 +80,27 @@ Ogni componente deve essere compilato ed eseguito in un terminale separato. Segu
    javac SegreteriaServer.java
 
 2. Esegui:
+   ```bash
    java SegreteriaServer
-
+   ```
 ### **Terminale 3: Segreteria**
 1. Compila:
    ```bash
    javac Segreteria.java
 
 2. Esegui:
+   ```bash
    java Segreteria
-
+   ```
 ### **Terminale 4: Studente1**
 1. Compila:
    ```bash
    javac Studente1.java
 
 2. Esegui:
-
+   ```bash
    java Studente1
+   ```
 
 ### **Terminale 5: Studente2**
 1. Compila:
@@ -103,15 +108,18 @@ Ogni componente deve essere compilato ed eseguito in un terminale separato. Segu
    javac Studente2.java
 
 2. Esegui:
+   ```bash
    java Studente2
-
+   ```
    ### **Terminale 6: Studente3**
 1. Compila:
    ```bash
    javac Studente3.java
 
 2. Esegui:
+   ```bash
    java Studente3
+   ```
 
 
 ## Ordine di Avvvio
